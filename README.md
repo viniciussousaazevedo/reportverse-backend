@@ -13,7 +13,7 @@ UFCG Reportverse é uma plataforma que tem como motivação os problemas de infr
 - [Padro Adrian](https://github.com/adrianmartinez-cg)
 - [Sonaly Nunes](https://github.com/sonalygnunes)
 - Victor Aquino
-- Vinícius Ribeiro
+- [Vinícius Ribeiro](https://github.com/viniciustrr)
 - [Vinícius Azevedo](https://github.com/viniciussousaazevedo)
 
-> Este repositório faz parte do Projeto da disciplina de Engenharia de Software, período 2021.2e
+> Este repositório trata-se apenas do backend da aplicação e faz parte do Projeto da disciplina de Engenharia de Software, período 2021.2e. Clique [aqui]() para visualizar o repositório referente ao frontend.
