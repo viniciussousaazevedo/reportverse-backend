@@ -1,13 +1,12 @@
 package com.es.reportverse.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CadastroUsuarioDTO {
+@EqualsAndHashCode
+@ToString
+public class CadastroDTO {
 
     private String nome;
 
