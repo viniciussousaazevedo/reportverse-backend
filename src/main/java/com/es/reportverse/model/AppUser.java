@@ -1,16 +1,14 @@
 package com.es.reportverse.model;
 
-import com.es.reportverse.enums.TipoUsuario;
+import com.es.reportverse.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -19,41 +17,41 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class Usuario implements UserDetails {
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private String nome;
+    private String name;
 
-    private String email;
+    private String username;
 
-    private String senha;
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    private TipoUsuario tipo;
+    private UserRole userRole;
 
-    private Boolean bloqueado = false;
+    private Boolean locked = false;
 
     // Utilizado apenas em casos de confirmação de e-mail (padrão do spring security)
     // Não iremos utilizar, já que o sistema não prevê lógica de confirmação de e-mail
-    private Boolean ativado = true;
+    private Boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(tipo.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(authority);
     }
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -63,7 +61,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !bloqueado;
+        return !locked;
     }
 
     @Override
@@ -73,6 +71,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return ativado;
+        return enabled;
     }
 }
