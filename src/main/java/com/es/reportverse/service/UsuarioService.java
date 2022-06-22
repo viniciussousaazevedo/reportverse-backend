@@ -8,4 +8,5 @@ public interface UsuarioService extends UserDetailsService {
 
     Usuario cadastraUsuario(CadastroUsuarioDTO cadastroUsuarioDTO);
 
+    void salvaUsuario(Usuario usuario);
 }

@@ -8,14 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "api/cadastro")
-public class CadastroController {
+@RequestMapping(path = "/api")
+public class UsuarioController {
 
     @Autowired
     UsuarioService usuarioService;
@@ -23,7 +20,7 @@ public class CadastroController {
     @Autowired
     ModelMapper modelMapper;
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<?> cadastraUsuario(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO) {
 
         Usuario usuario = this.usuarioService.cadastraUsuario(cadastroUsuarioDTO);

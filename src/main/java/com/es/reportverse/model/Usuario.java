@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -33,18 +34,11 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
 
-    private Boolean bloqueado;
+    private Boolean bloqueado = false;
 
-    private Boolean ativado;
-
-    public Usuario(String nome, String email, String senha, TipoUsuario tipo, Boolean bloqueado, Boolean ativado) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.tipo = tipo;
-        this.bloqueado = bloqueado;
-        this.ativado = ativado;
-    }
+    // Utilizado apenas em casos de confirmação de e-mail (padrão do spring security)
+    // Não iremos utilizar, já que o sistema não prevê lógica de confirmação de e-mail
+    private Boolean ativado = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,7 +53,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nome;
+        return email;
     }
 
     @Override
