@@ -4,16 +4,13 @@ import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class CadastroDTO {
+public class UsuarioDTO {
 
     private String nome;
 
     private String email;
-
-    private String senha;
-
-    private String confirmacaoSenha;
 
 }
