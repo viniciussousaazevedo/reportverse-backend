@@ -40,7 +40,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser rergisterUser(UserRegistrationDTO userRegistrationDTO) {
+    public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
         this.checkUsername(userRegistrationDTO.getUsername());
         this.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
 

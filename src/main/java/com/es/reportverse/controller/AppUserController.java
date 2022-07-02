@@ -6,7 +6,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.DTO.UserRegistrationDTO;
 import com.es.reportverse.DTO.UserDTO;
-import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
@@ -15,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +37,7 @@ public class AppUserController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 
-        AppUser appUser = this.appUserService.rergisterUser(userRegistrationDTO);
+        AppUser appUser = this.appUserService.registerUser(userRegistrationDTO);
         UserDTO userDTO = this.modelMapper.map(appUser, UserDTO.class);
 
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
