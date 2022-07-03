@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(
                 "/api/cadastro/**",
                 "/api/login/**",
-                "/api/token/refresh/**").permitAll();
+                "/api/token/refresh/**",
+                "/api/esqueci-senha/**").permitAll();
 
         // As próximas linhas servem para configurar modos de acesso (quem pode acessar o que). Será preciso reconfigurar
         // isso conforme o andamento do projeto.
