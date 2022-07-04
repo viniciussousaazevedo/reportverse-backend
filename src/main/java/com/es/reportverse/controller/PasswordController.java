@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
+import com.es.reportverse.service.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +27,12 @@ public class PasswordController {
     @Autowired
     AppUserService appUserService;
 
+    @Autowired
+    TokenManagerService tokenManagerService;
+
     @PostMapping("/esqueci-senha")
-    public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username, HttpServletRequest request, HttpServletResponse response) {
-
-        AppUser appUser = this.appUserService.getUser(username);
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        String access_token = JWT.create()
-                .withSubject(appUser.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .withIssuer(request.getRequestURI().toString())
-                .withClaim("userRole", appUser.getUserRole().toString())
-                .sign(algorithm);
-
-        return new ResponseEntity<>(access_token,HttpStatus.CREATED);
+    public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username, HttpServletRequest request) {
+        return new ResponseEntity<>(tokenManagerService.simulateToken(username,request),HttpStatus.CREATED);
     }
 
 }
