@@ -8,6 +8,7 @@ import com.es.reportverse.DTO.UserRegistrationDTO;
 import com.es.reportverse.DTO.UserDTO;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.service.TokenDecoderService;
 import com.es.reportverse.service.AppUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,9 @@ public class AppUserController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    TokenDecoderService tokenDecoder;
 
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
