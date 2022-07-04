@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +39,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser rergisterUser(UserRegistrationDTO userRegistrationDTO) {
+    public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
         this.checkUsername(userRegistrationDTO.getUsername());
         this.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
 
