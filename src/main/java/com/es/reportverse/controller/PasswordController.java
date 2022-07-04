@@ -1,11 +1,8 @@
 package com.es.reportverse.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
+import com.es.reportverse.service.EmailService;
+import com.es.reportverse.service.PasswordService;
 import com.es.reportverse.service.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +27,17 @@ public class PasswordController {
     @Autowired
     TokenManagerService tokenManagerService;
 
+    @Autowired
+    EmailService emailService;
+
     @PostMapping("/esqueci-senha")
     public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username, HttpServletRequest request) {
-        return new ResponseEntity<>(tokenManagerService.simulateToken(username,request),HttpStatus.CREATED);
+        // enviar email com a rota :
+        // localhost:8080/api/senha/trocar-senha/{token}
+        String token = tokenManagerService.simulateToken(username,request);
+        String recoveryLink = "localhost:8080/api/senha/trocar-senha/" + token;
+        String message = emailService.sendPasswordRecoveryEmail(username,recoveryLink);
+        return new ResponseEntity<>(message,HttpStatus.OK);
     }
 
 }
