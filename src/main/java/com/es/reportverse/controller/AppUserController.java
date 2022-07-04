@@ -26,7 +26,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/usuario/")
 public class AppUserController {
 
     @Autowired

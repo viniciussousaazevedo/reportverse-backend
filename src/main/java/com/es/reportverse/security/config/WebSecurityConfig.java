@@ -40,10 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Esse comando serve para informar quais são as rotas livres (que podem ser acessadas sem token)
         http.authorizeRequests().antMatchers(
-                "/api/cadastro/**",
+                "/api/usuario/cadastro/**",
                 "/api/login/**",
-                "/api/token/refresh/**",
-                "/api/esqueci-senha/**").permitAll();
+                "/api/usuario/token/refresh/**",
+                "/api/senha/esqueci-senha/**").permitAll();
 
         // As próximas linhas servem para configurar modos de acesso (quem pode acessar o que). Será preciso reconfigurar
         // isso conforme o andamento do projeto.

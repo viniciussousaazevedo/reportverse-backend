@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/senha/")
 
 public class PasswordController {
 
