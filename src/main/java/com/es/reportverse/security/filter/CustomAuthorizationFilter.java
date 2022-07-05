@@ -32,7 +32,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/api/login") ||
                 request.getServletPath().equals("/api/usuario/cadastro") ||
                 request.getServletPath().equals("/api/usuario/token/refresh") ||
-                request.getServletPath().equals("/api/senha/esqueci-senha")) {
+                request.getServletPath().equals("/api/senha/esqueci-senha") ||
+                request.getServletPath().equals("/api/swagger-ui")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
