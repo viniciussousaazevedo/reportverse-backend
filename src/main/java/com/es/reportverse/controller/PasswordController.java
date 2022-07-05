@@ -1,5 +1,6 @@
 package com.es.reportverse.controller;
 
+import com.es.reportverse.DTO.PasswordRecoveryDTO;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.EmailService;
@@ -11,13 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 
 @RestController
 @RequestMapping(path = "/api/senha/")
 
 public class PasswordController {
+
+    private final String SUCCESSFULLY_CHANGED_PASSWORD = "Senha alterada com sucesso.";
 
     @Autowired
     AppUserService appUserService;
@@ -28,21 +29,23 @@ public class PasswordController {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    PasswordService passwordService;
+
     @PostMapping("/esqueci-senha")
-    public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username, HttpServletRequest request) {
-        // enviar email com a rota :
-        // localhost:8080/api/senha/trocar-senha/{token}
-        String token = tokenManagerService.simulateToken(username,request);
-        String recoveryLink = "localhost:8080/api/senha/trocar-senha/" + token;
-        String message = emailService.sendPasswordRecoveryEmail(username,recoveryLink);
+    public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username) {
+
+        String link = passwordService.getPasswordRecoveryLink(username);
+
+        String message = emailService.sendPasswordRecoveryByEmail(username,link);
         return new ResponseEntity<>(message,HttpStatus.OK);
     }
 
     @PostMapping("/trocar-senha/{userToken}")
-    public ResponseEntity<?> setNewPassword(@RequestBody String newPassword, @PathVariable("userToken") String token, HttpServletRequest request){
-        AppUser user = tokenManagerService.decodeAppUserToken(request);
-        user.setPassword(newPassword);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> setNewPassword(@RequestBody PasswordRecoveryDTO passwordRecoveryDTO, @PathVariable("userToken") String token){
+        passwordService.setNewPassword(passwordRecoveryDTO, token);
+
+        return new ResponseEntity<>(SUCCESSFULLY_CHANGED_PASSWORD, HttpStatus.OK);
     }
 
 

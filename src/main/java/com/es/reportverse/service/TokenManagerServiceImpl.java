@@ -41,18 +41,4 @@ public class TokenManagerServiceImpl implements TokenManagerService {
         }
     }
 
-    @Override
-    public String simulateToken(String username, HttpServletRequest request) {
-
-        AppUser appUser = this.appUserService.getUser(username);
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-
-        return JWT.create()
-                .withSubject(appUser.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
-                .withIssuer(request.getRequestURI().toString())
-                .withClaim("userRole", appUser.getUserRole().toString())
-                .sign(algorithm);
-    }
-
 }

@@ -13,7 +13,7 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender emailSender;
 
     @Override
-    public String sendPasswordRecoveryEmail(String to, String recoveryLink) {
+    public String sendPasswordRecoveryByEmail(String to, String recoveryLink) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("reportverse1@gmail.com");
         message.setTo(to);

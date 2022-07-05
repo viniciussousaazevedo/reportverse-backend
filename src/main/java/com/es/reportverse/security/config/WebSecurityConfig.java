@@ -44,7 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/usuario/cadastro/**",
                 "/api/login/**",
                 "/api/usuario/token/refresh/**",
-                "/api/senha/esqueci-senha/**").permitAll();
+                "/api/senha/esqueci-senha/**",
+                "/api/senha/trocar-senha/**").permitAll();
 
         // As próximas linhas servem para configurar modos de acesso (quem pode acessar o que). Será preciso reconfigurar
         // isso conforme o andamento do projeto.

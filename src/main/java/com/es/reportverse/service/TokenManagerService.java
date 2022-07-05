@@ -8,5 +8,4 @@ public interface TokenManagerService {
 
     AppUser decodeAppUserToken(HttpServletRequest request);
 
-    String simulateToken(String username, HttpServletRequest request);
 }
