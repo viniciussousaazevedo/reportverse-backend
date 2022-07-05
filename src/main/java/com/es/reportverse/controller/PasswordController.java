@@ -1,5 +1,6 @@
 package com.es.reportverse.controller;
 
+import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.EmailService;
 import com.es.reportverse.service.PasswordService;
@@ -7,10 +8,7 @@ import com.es.reportverse.service.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,5 +37,13 @@ public class PasswordController {
         String message = emailService.sendPasswordRecoveryEmail(username,recoveryLink);
         return new ResponseEntity<>(message,HttpStatus.OK);
     }
+
+    @PostMapping("/trocar-senha/{userToken}")
+    public ResponseEntity<?> setNewPassword(@RequestBody String newPassword, @PathVariable("userToken") String token, HttpServletRequest request){
+        AppUser user = tokenManagerService.decodeAppUserToken(request);
+        user.setPassword(newPassword);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }
