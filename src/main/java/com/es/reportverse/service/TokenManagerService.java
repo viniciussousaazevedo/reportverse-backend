@@ -4,7 +4,8 @@ import com.es.reportverse.model.AppUser;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface TokenDecoderService {
+public interface TokenManagerService {
 
     AppUser decodeAppUserToken(HttpServletRequest request);
+
 }

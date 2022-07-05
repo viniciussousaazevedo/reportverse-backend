@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.UUID;
 
 
 @Data
@@ -37,6 +39,10 @@ public class AppUser implements UserDetails {
     // Utilizado apenas em casos de confirmação de e-mail (padrão do spring security)
     // Não iremos utilizar, já que o sistema não prevê lógica de confirmação de e-mail
     private Boolean enabled = true;
+
+    String recoveryPasswordToken;
+
+    Date recoveryPasswordTokenExpiration;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
