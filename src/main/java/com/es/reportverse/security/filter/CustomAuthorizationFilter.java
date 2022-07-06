@@ -34,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 request.getServletPath().equals("/api/usuario/token/refresh") ||
                 request.getServletPath().equals("/api/senha/esqueci-senha") ||
                 request.getServletPath().equals("/api/swagger-ui") ||
-                request.getServletPath().equals("/api/senha/trocar-senha" || 
+                request.getServletPath().equals("/api/senha/trocar-senha") ||
                 request.getServletPath().equals("/api/publicacao/cadastro")) {
             filterChain.doFilter(request, response);
         } else {

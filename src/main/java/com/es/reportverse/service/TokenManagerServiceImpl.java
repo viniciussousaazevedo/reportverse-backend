@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Date;
-
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service

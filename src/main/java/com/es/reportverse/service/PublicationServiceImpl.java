@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import com.es.reportverse.service.TokenManagerService;
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ public class PublicationServiceImpl implements PublicationService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private TokenDecoderService tokenDecoder;
+    private TokenManagerService tokenDecoder;
 
     @Override
     public Publication registerPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
