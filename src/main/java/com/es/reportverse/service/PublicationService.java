@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface PublicationService {
 
-    Publication rergisterPublication(PublicationDTO publicationDTO, HttpServletRequest request);
+    Publication registerPublication(PublicationDTO publicationDTO, HttpServletRequest request);
 
     void savePublication(Publication publication);
 

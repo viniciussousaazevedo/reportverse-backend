@@ -30,7 +30,7 @@ public class PublicationController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerPublication(@RequestBody PublicationDTO publicationDTO, HttpServletRequest request) {
 
-        Publication publication = this.publicationService.rergisterPublication(publicationDTO, request);
+        Publication publication = this.publicationService.registerPublication(publicationDTO, request);
 
         this.midiaService.registerMidias(publicationDTO.getMidiasPathList(), publication.getId());
 

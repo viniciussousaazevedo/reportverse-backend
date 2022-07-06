@@ -28,7 +28,7 @@ public class PublicationServiceImpl implements PublicationService {
     private TokenDecoderService tokenDecoder;
 
     @Override
-    public Publication rergisterPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
+    public Publication registerPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
 
         AppUser appUser = tokenDecoder.decodeAppUserToken(request);
 
