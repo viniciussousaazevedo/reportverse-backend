@@ -23,7 +23,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @AllArgsConstructor
-@EnableWebSecurity
+// @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -45,7 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/login/**",
                 "/api/usuario/token/refresh/**",
                 "/api/senha/esqueci-senha/**",
-                "/api/senha/trocar-senha/**").permitAll();
+                "/api/senha/trocar-senha/**",
+                "/api/publicacao/cadastro/**").permitAll();
 
         // As próximas linhas servem para configurar modos de acesso (quem pode acessar o que). Será preciso reconfigurar
         // isso conforme o andamento do projeto.
