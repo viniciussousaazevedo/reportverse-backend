@@ -7,4 +7,6 @@ public interface PasswordService {
     String getPasswordRecoveryLink(String username);
 
     void setNewPassword(PasswordRecoveryDTO passwordRecoveryDTO, String token);
+
+    void checkPasswordConfirmation(String password, String passwordConfirmation);
 }

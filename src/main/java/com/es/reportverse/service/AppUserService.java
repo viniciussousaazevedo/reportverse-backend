@@ -14,5 +14,4 @@ public interface AppUserService extends UserDetailsService {
 
     AppUser getUserByRecoveryPasswordToken(String recoveryPasswordToken);
 
-    void checkPasswordConfirmation(String password, String passwordConfirmation);
 }
