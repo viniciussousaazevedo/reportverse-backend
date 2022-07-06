@@ -19,13 +19,14 @@ import java.util.Optional;
 @Transactional
 public class AppUserServiceImpl implements AppUserService {
 
-    private final static String USER_NOT_FOUND = "Usuário com e-mail %s não encontrado";
+    private final static String USER_NOT_FOUND = "Usuário não encontrado";
     private final static String USERNAME_ALREADY_TAKEN = "e-mail %s já se encontra cadastrado";
-    private final static String UNMATCHED_PASSWORDS = "A Senha informada não coincide com a confirmação de senha";
 
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private PasswordService passwordService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -35,13 +36,13 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return appUserRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
+                new UsernameNotFoundException(USER_NOT_FOUND));
     }
 
     @Override
     public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
         this.checkUsername(userRegistrationDTO.getUsername());
-        this.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
+        this.passwordService.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
 
         userRegistrationDTO.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
 
@@ -58,12 +59,6 @@ public class AppUserServiceImpl implements AppUserService {
         }
     }
 
-    private void checkPasswordConfirmation(String password, String passwordConfirmation) {
-        if (!password.equals(passwordConfirmation)) {
-            throw new ApiRequestException(UNMATCHED_PASSWORDS);
-        }
-    }
-
     @Override
     public void saveUser(AppUser appUser) {
         this.appUserRepository.save(appUser);
@@ -74,7 +69,18 @@ public class AppUserServiceImpl implements AppUserService {
         Optional<AppUser> appUserOp = this.appUserRepository.findByUsername(username);
 
         if (appUserOp.isEmpty()) {
-            throw new ApiRequestException(String.format(USER_NOT_FOUND, username));
+            throw new ApiRequestException(USER_NOT_FOUND);
+        }
+
+        return appUserOp.get();
+    }
+
+    @Override
+    public AppUser getUserByRecoveryPasswordToken(String recoveryPasswordToken) {
+        Optional<AppUser> appUserOp = this.appUserRepository.findByRecoveryPasswordToken(recoveryPasswordToken);
+
+        if (appUserOp.isEmpty()) {
+            throw new ApiRequestException(USER_NOT_FOUND);
         }
 
         return appUserOp.get();

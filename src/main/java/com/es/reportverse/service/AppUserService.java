@@ -11,4 +11,7 @@ public interface AppUserService extends UserDetailsService {
     void saveUser(AppUser appUser);
 
     AppUser getUser(String username);
+
+    AppUser getUserByRecoveryPasswordToken(String recoveryPasswordToken);
+
 }
