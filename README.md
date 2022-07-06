@@ -3,12 +3,10 @@ UFCG Reportverse é uma plataforma que tem como motivação os problemas de infr
 
 
 ### Integrantes:
-- [Felipe Siqueira](https://github.com/felipesqra)
 - [Filipe Ramalho](https://github.com/musquitinh0)
 - [Gabriel Menezes](https://github.com/bielmenezesc)
 - [Gabriel Cavalcanti](https://github.com/GabrielCLL)
 - [Marcos Silva](https://github.com/marcossilvaxx)
-- [Luanna Silva](https://github.com/LuannaLeonel)
 - [Hiago Lacerda](https://github.com/Hiagod)
 - [Padro Adrian](https://github.com/adrianmartinez-cg)
 - [Sonaly Nunes](https://github.com/sonalygnunes)
