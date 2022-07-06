@@ -23,7 +23,7 @@ public class Publication {
 
     private String latitude;
 
-    private int authorId;
+    private Long authorId;
 
     private int qttComplaints;
 
@@ -33,7 +33,7 @@ public class Publication {
 
     private Boolean isAvailable = true;
 
-    public Publication(String description, String longitude, String latitude, int authorId, int qttComplaints, int qttLikes,
+    public Publication(String description, String longitude, String latitude, Long authorId, int qttComplaints, int qttLikes,
     Boolean isAuthorAnonymous, Boolean isSolved, Boolean isAvailable) {
         this.description = description;
         this.longitude = longitude;
@@ -42,54 +42,6 @@ public class Publication {
         this.qttComplaints = qttComplaints;
         this.qttLikes = qttLikes;
         this.isAuthorAnonymous = isAuthorAnonymous;
-        this.isAvailable = isAvailable;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public int getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
-    public int getQttComplaints() {
-        return qttComplaints;
-    }
-
-    public void setQttComplaints(int qttComplaints) {
-        this.qttComplaints = qttComplaints;
-    }
-
-    public int getQttLikes() {
-        return qttLikes;
-    }
-
-    public void setQttLikes(int qttLikes) {
-        this.qttLikes = qttLikes;
-    }
-
-    public boolean getIsAuthorAnonymous() {
-        return isAuthorAnonymous;
-    }   
-
-    public boolean getIsAvailable() {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 }

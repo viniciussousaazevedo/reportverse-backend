@@ -2,14 +2,15 @@ package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.PublicationDTO;
 import com.es.reportverse.exception.ApiRequestException;
-import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.Publication;
 import com.es.reportverse.repository.PublicationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @Transactional
@@ -23,11 +24,16 @@ public class PublicationServiceImpl implements PublicationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private TokenDecoderService tokenDecoder;
+
     @Override
-    public Publication rergisterPublication(PublicationDTO publicationRegistrationDTO) {
+    public Publication rergisterPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
+
+        AppUser appUser = tokenDecoder.decodeAppUserToken(request);
 
         Publication publication = this.modelMapper.map(publicationRegistrationDTO, Publication.class);
-        publication.setAuthorId(1);
+        publication.setAuthorId(appUser.getId());
         publication.setIsAvailable(true);
         publication.setQttComplaints(0);
         publication.setQttLikes(0);

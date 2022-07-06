@@ -1,7 +1,7 @@
 package com.es.reportverse.DTO;
 
 import lombok.*;
-
+import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +16,7 @@ public class PublicationDTO {
     private String latitude;
 
     private Boolean isAuthorAnonymous;
+
+    private List<String> midiasPathList;
 
 }
