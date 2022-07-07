@@ -15,8 +15,6 @@ public class PasswordServiceImpl implements PasswordService{
 
     private final int MINUTES_FOR_TOKEN_EXPIRED = 15;
 
-    private final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
-
     private final String RECOVERY_TOKEN_EXPIRED = "Este link já expirou. Solicite uma nova recuperação de senha";
 
     private final String PASSWORD_RECOVERY_PATH = "localhost:8080/api/senha/trocar-senha/%s";
@@ -46,7 +44,7 @@ public class PasswordServiceImpl implements PasswordService{
             throw new ApiRequestException(RECOVERY_TOKEN_EXPIRED);
         }
 
-        this.checkPasswordConfirmation(
+        this.appUserService.checkPasswordConfirmation(
                 passwordRecoveryDTO.getPassword(),
                 passwordRecoveryDTO.getPasswordConfirmation()
         );
@@ -55,10 +53,5 @@ public class PasswordServiceImpl implements PasswordService{
         appUserService.saveUser(user);
     }
 
-    @Override
-    public void checkPasswordConfirmation(String password, String passwordConfirmation) {
-        if (!password.equals(passwordConfirmation)) {
-            throw new ApiRequestException(UNMATCHED_PASSWORDS);
-        }
-    }
+
 }

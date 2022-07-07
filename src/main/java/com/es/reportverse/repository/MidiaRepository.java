@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public interface MidiaRepository extends JpaRepository<Midia, Long> {
 
     List<Midia> findByPublicationId(Long id);

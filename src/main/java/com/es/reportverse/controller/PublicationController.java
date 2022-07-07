@@ -36,4 +36,14 @@ public class PublicationController {
 
         return new ResponseEntity<>(publicationDTO, HttpStatus.CREATED);
     }
+
+    @GetMapping("/mapa")
+    public ResponseEntity<?> getPublicationsLocations() {
+        return new ResponseEntity<>(this.publicationService.getPublicationsLocations(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{publicationId}")
+    public ResponseEntity<?> getPublication(@PathVariable("publicationId") Long publicationId) {
+        return new ResponseEntity<>(this.publicationService.getPublication(publicationId), HttpStatus.OK);
+    }
 }

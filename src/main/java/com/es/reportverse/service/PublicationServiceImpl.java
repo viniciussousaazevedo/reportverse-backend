@@ -1,6 +1,7 @@
 package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.PublicationDTO;
+import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
@@ -9,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import com.es.reportverse.service.TokenManagerService;
@@ -57,6 +61,19 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         return publicationOp.get();
+    }
+
+    @Override
+    public List<PublicationLocationDTO> getPublicationsLocations() {
+        List<PublicationLocationDTO> publicationLocations = new ArrayList<>();
+
+        publicationRepository.findAll()
+                .forEach(publication -> publicationLocations.add(
+                        this.modelMapper.map(publication, PublicationLocationDTO.class)
+                        )
+                );
+
+        return publicationLocations;
     }
 
 }
