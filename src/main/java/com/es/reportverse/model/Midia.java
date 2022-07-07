@@ -22,6 +22,7 @@ public class Midia {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(columnDefinition = "text")
     private String code;
 
     private Long publicationId;
@@ -42,12 +43,4 @@ public class Midia {
     public void setCode(String code) {
         this.code = code;
     }
-
-    // public Publication getPublicacaoId() {
-    //     return this.publication;
-    // }
-
-    // public void setPublicacaoId(Publication publication) {
-    //     this.publication = publication;
-    // }
 }

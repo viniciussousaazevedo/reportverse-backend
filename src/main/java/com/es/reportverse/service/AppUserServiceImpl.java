@@ -21,12 +21,11 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final static String USER_NOT_FOUND = "Usuário não encontrado";
     private final static String USERNAME_ALREADY_TAKEN = "e-mail %s já se encontra cadastrado";
+    private final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
 
     @Autowired
     private AppUserRepository appUserRepository;
 
-    @Autowired
-    private PasswordService passwordService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -42,7 +41,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser registerUser(UserRegistrationDTO userRegistrationDTO) {
         this.checkUsername(userRegistrationDTO.getUsername());
-        this.passwordService.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
+        this.checkPasswordConfirmation(userRegistrationDTO.getPassword(), userRegistrationDTO.getPasswordConfirmation());
 
         userRegistrationDTO.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
 
@@ -84,5 +83,12 @@ public class AppUserServiceImpl implements AppUserService {
         }
 
         return appUserOp.get();
+    }
+
+    @Override
+    public void checkPasswordConfirmation(String password, String passwordConfirmation) {
+        if (!password.equals(passwordConfirmation)) {
+            throw new ApiRequestException(UNMATCHED_PASSWORDS);
+        }
     }
 }
