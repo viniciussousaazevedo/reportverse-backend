@@ -9,10 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 
 @Data
@@ -40,9 +37,12 @@ public class AppUser implements UserDetails {
     // Não iremos utilizar, já que o sistema não prevê lógica de confirmação de e-mail
     private Boolean enabled = true;
 
-    String recoveryPasswordToken;
+    private String recoveryPasswordToken;
 
-    Date recoveryPasswordTokenExpiration;
+    private Date recoveryPasswordTokenExpiration;
+
+    @ElementCollection
+    private Set<Long> reportedPublicationsIds;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

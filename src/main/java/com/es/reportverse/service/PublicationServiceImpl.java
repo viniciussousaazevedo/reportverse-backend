@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import com.es.reportverse.service.TokenManagerService;
 
@@ -31,6 +32,9 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Autowired
     private TokenManagerService tokenDecoder;
+
+    @Autowired
+    private AppUserService appUserService;
 
     @Override
     public Publication registerPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
@@ -74,6 +78,28 @@ public class PublicationServiceImpl implements PublicationService {
                 );
 
         return publicationLocations;
+    }
+
+    @Override
+    public Publication manipulatePublicationReports(AppUser user, Long publicationId) {
+        Publication publication = this.getPublication(publicationId);
+        Set<Long> reportedPublicationsIds = user.getReportedPublicationsIds();
+        int manipulation;
+
+        if (reportedPublicationsIds.contains(publicationId)) {
+            manipulation = -1;
+            reportedPublicationsIds.remove(publicationId);
+        } else {
+            manipulation = 1;
+            reportedPublicationsIds.add(publicationId);
+        }
+
+        publication.setQttComplaints(publication.getQttComplaints() + manipulation);
+        this.savePublication(publication);
+        this.appUserService.saveUser(user);
+
+
+        return publication;
     }
 
 }
