@@ -4,6 +4,7 @@ import com.es.reportverse.DTO.PublicationDTO;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.MidiaService;
+import com.es.reportverse.service.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class PublicationController {
     @Autowired
     MidiaService midiaService;
 
+    @Autowired
+    TokenManagerService tokenManager;
+
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerPublication(@RequestBody PublicationDTO publicationDTO, HttpServletRequest request) {
 
@@ -45,5 +49,11 @@ public class PublicationController {
     @GetMapping("/{publicationId}")
     public ResponseEntity<?> getPublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.getPublication(publicationId), HttpStatus.OK);
+    }
+
+    @PostMapping("/denunciar/{publicationId}")
+    public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(this.publicationService.manipulatePublicationReports(user, publicationId), HttpStatus.OK);
     }
 }
