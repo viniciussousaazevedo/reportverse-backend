@@ -100,7 +100,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void updateReportsToCheck(Collection<AppUser> admins, Publication publication) {
+    public Publication updateReportsToCheck(Collection<AppUser> admins, Publication publication) {
         if(publication.getQttComplaints() >= 5 || !publication.getIsAvailable()){
             for (AppUser admin : admins){
                 if(admin.getReportsToCheck().contains(publication.getId())){
@@ -115,6 +115,6 @@ public class AppUserServiceImpl implements AppUserService {
                 this.saveUser(admin);
             }
         }
-
+        return publication;
     }
 }
