@@ -92,17 +92,9 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         publication.setQttComplaints(publication.getQttComplaints() + manipulation);
+
+        this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publication);
         this.savePublication(publication);
-
-        if(publication.getQttComplaints() >= 5){
-            publication.setIsAvailable(false);
-            this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publicationId);
-        } else {
-            if(!publication.getIsAvailable()){
-                this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publicationId);
-            }
-        }
-
         this.appUserService.saveUser(user);
 
 

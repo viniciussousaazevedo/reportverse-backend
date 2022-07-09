@@ -2,6 +2,7 @@ package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.UserRegistrationDTO;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.Publication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Collection;
@@ -20,6 +21,6 @@ public interface AppUserService extends UserDetailsService {
 
     Collection<AppUser> findAllAdmins();
 
-    void updateReportsToCheck(Collection<AppUser> admins, Long publicationId);
+    void updateReportsToCheck(Collection<AppUser> admins, Publication publication);
 
 }

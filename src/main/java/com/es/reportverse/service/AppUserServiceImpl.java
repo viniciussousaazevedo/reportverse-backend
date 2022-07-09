@@ -4,6 +4,7 @@ import com.es.reportverse.DTO.UserRegistrationDTO;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.Publication;
 import com.es.reportverse.repository.AppUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,14 +100,21 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void updateReportsToCheck(Collection<AppUser> admins, Long publicationId) {
-        for (AppUser admin : admins){
-            if(admin.getReportsToCheck().contains(publicationId)){
-                admin.getReportsToCheck().remove(publicationId);
-            } else {
-                admin.getReportsToCheck().add(publicationId);
+    public void updateReportsToCheck(Collection<AppUser> admins, Publication publication) {
+        if(publication.getQttComplaints() >= 5 || !publication.getIsAvailable()){
+            for (AppUser admin : admins){
+                if(admin.getReportsToCheck().contains(publication.getId())){
+                    if(publication.getQttComplaints() < 5){
+                        admin.getReportsToCheck().remove(publication.getId());
+                        publication.setIsAvailable(true);
+                    }
+                } else {
+                    admin.getReportsToCheck().add(publication.getId());
+                    publication.setIsAvailable(false);
+                }
+                this.saveUser(admin);
             }
-            this.saveUser(admin);
         }
+
     }
 }
