@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -89,6 +90,23 @@ public class AppUserServiceImpl implements AppUserService {
     public void checkPasswordConfirmation(String password, String passwordConfirmation) {
         if (!password.equals(passwordConfirmation)) {
             throw new ApiRequestException(UNMATCHED_PASSWORDS);
+        }
+    }
+
+    @Override
+    public Collection<AppUser> findAllAdmins() {
+        return this.appUserRepository.findAllAdmins();
+    }
+
+    @Override
+    public void updateReportsToCheck(Collection<AppUser> admins, Long publicationId) {
+        for (AppUser admin : admins){
+            if(admin.getReportsToCheck().contains(publicationId)){
+                admin.getReportsToCheck().remove(publicationId);
+            } else {
+                admin.getReportsToCheck().add(publicationId);
+            }
+            this.saveUser(admin);
         }
     }
 }

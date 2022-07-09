@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import com.es.reportverse.service.TokenManagerService;
 
@@ -96,6 +93,16 @@ public class PublicationServiceImpl implements PublicationService {
 
         publication.setQttComplaints(publication.getQttComplaints() + manipulation);
         this.savePublication(publication);
+
+        if(publication.getQttComplaints() >= 5){
+            publication.setIsAvailable(false);
+            this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publicationId);
+        } else {
+            if(!publication.getIsAvailable()){
+                this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publicationId);
+            }
+        }
+
         this.appUserService.saveUser(user);
 
 

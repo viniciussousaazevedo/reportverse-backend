@@ -44,6 +44,9 @@ public class AppUser implements UserDetails {
     @ElementCollection
     private Set<Long> reportedPublicationsIds;
 
+    @ElementCollection
+    private Set<Long> reportsToCheck;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
