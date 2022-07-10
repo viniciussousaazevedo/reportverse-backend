@@ -47,6 +47,12 @@ public class AppUserController {
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
+    // Apenas para teste , apagar mais tarde
+    @GetMapping("/getAdmins")
+    public ResponseEntity<?> getAdmins(){
+        return new ResponseEntity<>(this.appUserService.findAllAdmins(),HttpStatus.OK);
+    }
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
