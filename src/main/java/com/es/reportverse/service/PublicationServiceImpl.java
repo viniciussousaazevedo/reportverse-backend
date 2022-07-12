@@ -1,25 +1,22 @@
 package com.es.reportverse.service;
 
-import com.es.reportverse.DTO.PublicationDTO;
+import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.repository.PublicationRepository;
+import com.es.reportverse.service.publicationReactionLogic.PublicationReaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-import com.es.reportverse.service.TokenManagerService;
 
 @Service
-@Transactional
 public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
@@ -33,11 +30,8 @@ public class PublicationServiceImpl implements PublicationService {
     @Autowired
     private TokenManagerService tokenDecoder;
 
-    @Autowired
-    private AppUserService appUserService;
-
     @Override
-    public Publication registerPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
+    public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
 
         AppUser appUser = tokenDecoder.decodeAppUserToken(request);
 
@@ -81,25 +75,8 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication manipulatePublicationReports(AppUser user, Long publicationId) {
-        Publication publication = this.getPublication(publicationId);
-        Set<Long> reportedPublicationsIds = user.getReportedPublicationsIds();
-        int manipulation;
-
-        if (reportedPublicationsIds.contains(publicationId)) {
-            manipulation = -1;
-            reportedPublicationsIds.remove(publicationId);
-        } else {
-            manipulation = 1;
-            reportedPublicationsIds.add(publicationId);
-        }
-
-        publication.setQttComplaints(publication.getQttComplaints() + manipulation);
-        this.savePublication(publication);
-        this.appUserService.saveUser(user);
-
-
-        return publication;
+    public Publication manipulatePublicationReaction(PublicationReaction publicationReaction, Long publicationId) {
+        return publicationReaction.manipulatePublicationReaction(publicationId);
     }
 
 }

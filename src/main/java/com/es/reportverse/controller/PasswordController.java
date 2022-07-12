@@ -1,7 +1,6 @@
 package com.es.reportverse.controller;
 
 import com.es.reportverse.DTO.PasswordRecoveryDTO;
-import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.EmailService;
 import com.es.reportverse.service.PasswordService;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(path = "/api/senha/")
