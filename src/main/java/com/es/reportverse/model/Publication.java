@@ -33,8 +33,10 @@ public class Publication {
 
     private Boolean isAvailable = true;
 
+    private Boolean isResolved = false;
+
     public Publication(String description, String longitude, String latitude, Long authorId, int qttComplaints, int qttLikes,
-    Boolean isAuthorAnonymous, Boolean isSolved, Boolean isAvailable) {
+    Boolean isAuthorAnonymous, Boolean isSolved, Boolean isAvailable, Boolean isResolved) {
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -43,5 +45,6 @@ public class Publication {
         this.qttLikes = qttLikes;
         this.isAuthorAnonymous = isAuthorAnonymous;
         this.isAvailable = isAvailable;
+        this.isResolved = isResolved;
     }
 }

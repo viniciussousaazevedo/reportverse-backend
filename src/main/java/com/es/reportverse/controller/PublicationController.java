@@ -1,9 +1,10 @@
 package com.es.reportverse.controller;
 
 import com.es.reportverse.DTO.PublicationDTO;
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
-import com.es.reportverse.service.MidiaService;
+import com.es.reportverse.service.MediaService;
 import com.es.reportverse.service.TokenManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class PublicationController {
     AppUserService appUserService;
 
     @Autowired
-    MidiaService midiaService;
+    MediaService mediaService;
 
     @Autowired
     TokenManagerService tokenManager;
@@ -36,7 +37,7 @@ public class PublicationController {
 
         Publication publication = this.publicationService.registerPublication(publicationDTO, request);
 
-        this.midiaService.registerMidias(publicationDTO.getMidiasPathList(), publication.getId());
+        this.mediaService.registerMedias(publicationDTO.getMediasPathList(), publication.getId());
 
         return new ResponseEntity<>(publicationDTO, HttpStatus.CREATED);
     }
@@ -55,5 +56,17 @@ public class PublicationController {
     public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.manipulatePublicationReports(user, publicationId), HttpStatus.OK);
+    }
+
+    @GetMapping("/exibirDenunciasAutor")
+    public ResponseEntity<?> getPublicationsByAuthorId(HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(this.publicationService.getPublicationsByAuthorId(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/resolverDenuncia/{publicationId}")
+    public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
 }

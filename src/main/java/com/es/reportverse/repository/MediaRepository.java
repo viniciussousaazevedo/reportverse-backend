@@ -1,6 +1,6 @@
 package com.es.reportverse.repository;
 
-import com.es.reportverse.model.Midia;
+import com.es.reportverse.model.Media;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface MidiaRepository extends JpaRepository<Midia, Long> {
+public interface MediaRepository extends JpaRepository<Media, Long> {
 
-    List<Midia> findByPublicationId(Long id);
+    List<Media> findByPublicationId(Long id);
 
 }

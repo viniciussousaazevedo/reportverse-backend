@@ -7,7 +7,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MidiaDTO {
+public class MediaDTO {
 
     private String code;
 
