@@ -24,7 +24,7 @@ import com.es.reportverse.service.TokenManagerService;
 public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
-    private final static String AUTHOR_NOT_MATCH = "Usuário com id %s não é o autor desta publicação";
+    private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
 
     @Autowired
     private PublicationRepository publicationRepository;
@@ -110,7 +110,7 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public List<Publication> getPublicationsAuthorId(AppUser user) {
+    public List<Publication> getPublicationsByAuthorId(AppUser user) {
 
         List<Publication> publicationsList = new ArrayList<>();
 
@@ -124,20 +124,16 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication publicationResolved(Long id, AppUser user) {
+    public Publication resolvePublication(Long id, AppUser user) {
 
-        Optional<Publication> publicationOp = this.publicationRepository.findById(id);
-        if (publicationOp.isEmpty()) {
-            throw new ApiRequestException(String.format(PUBLICATION_NOT_FOUND, id));
-        }
-        Publication publication = publicationOp.get();
+        Publication publication = this.getPublication(id);
 
         if (user.getId().equals(publication.getAuthorId())) {
             publication.setIsResolved(true);
             publication.setIsAvailable(false);
             this.savePublication(publication);
         } else {
-            throw new ApiRequestException(String.format(AUTHOR_NOT_MATCH, user.getId()));
+            throw new ApiRequestException(String.format(USER_IS_NOT_AUTHOR, user.getId()));
         }
         
         return publication;

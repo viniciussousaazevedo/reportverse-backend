@@ -59,14 +59,14 @@ public class PublicationController {
     }
 
     @GetMapping("/exibirDenunciasAutor")
-    public ResponseEntity<?> getPublicationsAuthorId(HttpServletRequest request) {
+    public ResponseEntity<?> getPublicationsByAuthorId(HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
-        return new ResponseEntity<>(this.publicationService.getPublicationsAuthorId(user), HttpStatus.OK);
+        return new ResponseEntity<>(this.publicationService.getPublicationsByAuthorId(user), HttpStatus.OK);
     }
 
     @PostMapping("/resolverDenuncia/{publicationId}")
-    public ResponseEntity<?> publicationResolved(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+    public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
-        return new ResponseEntity<>(this.publicationService.publicationResolved(publicationId, user), HttpStatus.OK);
+        return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
 }
