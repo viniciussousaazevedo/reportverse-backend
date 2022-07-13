@@ -25,4 +25,6 @@ public class PublicationResponseDTO {
 
     private List<MidiaDTO> medias;
 
+    private List<ReportDTO> reports;
+
 }

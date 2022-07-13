@@ -4,6 +4,7 @@ import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
+import com.es.reportverse.model.appUserReaction.AppUserReaction;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -18,5 +19,5 @@ public interface PublicationService {
 
     List<PublicationLocationDTO> getPublicationsLocations();
 
-    Publication manipulatePublicationLikes(AppUser user, Long publicationId);
+    Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction);
 }

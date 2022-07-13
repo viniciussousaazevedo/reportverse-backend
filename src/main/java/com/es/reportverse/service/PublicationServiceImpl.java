@@ -4,8 +4,9 @@ import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
-import com.es.reportverse.model.AppUserLike;
+import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
+import com.es.reportverse.model.appUserReaction.AppUserReaction;
 import com.es.reportverse.repository.PublicationRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -73,17 +74,24 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication manipulatePublicationLikes(AppUser user, Long publicationId) {
+    public Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction) {
         Publication publication = this.getPublication(publicationId);
 
-        List<AppUserLike> userAppUserLike = publication.getLikes().stream().filter(
+        @SuppressWarnings("unchecked")
+        List<AppUserReaction> reactionList =
+                reaction instanceof AppUserLike ?
+                        (List) publication.getLikes() :
+                        (List) publication.getReports();
+
+        List<AppUserReaction> userLike = reactionList.stream().filter(
                 l -> l.getAppUser().getId().equals(user.getId())
         ).collect(Collectors.toList());
 
-        if (userAppUserLike.size() > 0) {
-            publication.getLikes().remove(userAppUserLike.get(0));
+        if (userLike.isEmpty()) {
+            reaction.setAppUser(user);
+            reactionList.add(reaction);
         } else {
-            publication.getLikes().add(new AppUserLike(user));
+            reactionList.remove(userLike.get(0));
         }
 
         return this.savePublication(publication);

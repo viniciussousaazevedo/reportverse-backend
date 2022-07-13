@@ -4,6 +4,8 @@ import com.es.reportverse.DTO.MidiaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
 import com.es.reportverse.model.Midia;
+import com.es.reportverse.model.appUserReaction.AppUserLike;
+import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.MidiaService;
@@ -60,7 +62,16 @@ public class PublicationController {
     @PostMapping("/curtir/{publicationId}")
     public ResponseEntity<?> manipulatePublicationLikes(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
-        Publication publication = this.publicationService.manipulatePublicationLikes(user, publicationId);
+        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserLike());
+
+
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+    }
+
+    @PostMapping("/reportar/{publicationId}")
+    public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserReport());
 
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
