@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,5 +14,7 @@ import java.util.Optional;
 public interface PublicationRepository extends JpaRepository<Publication, Long> {
 
     Optional<Publication> findById(Long id);
+
+    List<Publication> findAllByNeedsReview(Boolean needsReview);
 
 }

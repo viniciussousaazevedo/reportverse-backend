@@ -100,4 +100,9 @@ public class PublicationServiceImpl implements PublicationService {
         return publication;
     }
 
+    @Override
+    public List<Publication> findAllByNeedsReview(Boolean needsReview) {
+        return this.publicationRepository.findAllByNeedsReview(needsReview);
+    }
+
 }

@@ -18,4 +18,6 @@ public interface PublicationService {
     List<PublicationLocationDTO> getPublicationsLocations();
 
     Publication manipulatePublicationReports(AppUser user, Long publicationId);
+
+    List<Publication> findAllByNeedsReview(Boolean needsReview);
 }

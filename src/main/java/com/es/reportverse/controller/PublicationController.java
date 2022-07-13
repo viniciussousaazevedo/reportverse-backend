@@ -56,4 +56,9 @@ public class PublicationController {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.manipulatePublicationReports(user, publicationId), HttpStatus.OK);
     }
+
+    @GetMapping("/reportadas")
+    public ResponseEntity<?> getReportedPublications() {
+        return new ResponseEntity<>(this.publicationService.findAllByNeedsReview(true), HttpStatus.OK);
+    }
 }

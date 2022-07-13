@@ -107,10 +107,12 @@ public class AppUserServiceImpl implements AppUserService {
                     if(publication.getQttComplaints() < 5){
                         admin.getReportsToCheck().remove(publication.getId());
                         publication.setIsAvailable(true);
+                        publication.setNeedsReview(false);
                     }
                 } else {
                     admin.getReportsToCheck().add(publication.getId());
                     publication.setIsAvailable(false);
+                    publication.setNeedsReview(true);
                 }
                 this.saveUser(admin);
             }
