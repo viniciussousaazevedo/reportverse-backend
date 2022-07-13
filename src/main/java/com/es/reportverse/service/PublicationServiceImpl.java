@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
-import com.es.reportverse.service.TokenManagerService;
 
 @Service
 @Transactional
@@ -93,7 +92,7 @@ public class PublicationServiceImpl implements PublicationService {
 
         publication.setQttComplaints(publication.getQttComplaints() + manipulation);
 
-        this.savePublication(this.appUserService.updateReportsToCheck(this.appUserService.findAllAdmins(),publication));;
+        this.savePublication(this.appUserService.updatePublicationsToCheck(this.appUserService.findAllAdmins(),publication));;
         this.appUserService.saveUser(user);
 
 

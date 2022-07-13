@@ -21,6 +21,6 @@ public interface AppUserService extends UserDetailsService {
 
     Collection<AppUser> findAllAdmins();
 
-    Publication updateReportsToCheck(Collection<AppUser> admins, Publication publication);
+    Publication updatePublicationsToCheck(Collection<AppUser> admins, Publication publication);
 
 }
