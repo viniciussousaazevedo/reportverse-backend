@@ -14,11 +14,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class AppUser extends GenericModel implements UserDetails {
 
     private String name;
 
@@ -38,9 +34,6 @@ public class AppUser implements UserDetails {
     private String recoveryPasswordToken;
 
     private Date recoveryPasswordTokenExpiration;
-
-    @ElementCollection
-    private Set<Long> reportedPublicationsIds;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

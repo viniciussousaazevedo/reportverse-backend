@@ -5,8 +5,8 @@ import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.repository.AppUserRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,19 +17,17 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
 
     private final static String USER_NOT_FOUND = "Usuário não encontrado";
     private final static String USERNAME_ALREADY_TAKEN = "e-mail %s já se encontra cadastrado";
     private final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
 
-    @Autowired
     private AppUserRepository appUserRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override

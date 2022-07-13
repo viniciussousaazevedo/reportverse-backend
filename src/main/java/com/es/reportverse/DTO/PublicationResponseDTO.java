@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class PublicationResponseDTO {
 
+    private Long id;
+
     private String description;
 
     private String longitude;
@@ -19,9 +21,7 @@ public class PublicationResponseDTO {
 
     private Long authorId;
 
-    private int qttComplaints;
-
-    private int qttLikes;
+    private List<LikeDTO> likes;
 
     private List<MidiaDTO> medias;
 

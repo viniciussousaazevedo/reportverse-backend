@@ -5,17 +5,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class Publication {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE) 
-    private Long id;
+public class Publication extends GenericModel {
 
     private String description;
 
@@ -25,23 +22,10 @@ public class Publication {
 
     private Long authorId;
 
-    private int qttComplaints;
-
-    private int qttLikes;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<AppUserLike> likes;
 
     private Boolean isAuthorAnonymous = false;
 
     private Boolean isAvailable = true;
-
-    public Publication(String description, String longitude, String latitude, Long authorId, int qttComplaints, int qttLikes,
-    Boolean isAuthorAnonymous, Boolean isSolved, Boolean isAvailable) {
-        this.description = description;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.authorId = authorId;
-        this.qttComplaints = qttComplaints;
-        this.qttLikes = qttLikes;
-        this.isAuthorAnonymous = isAuthorAnonymous;
-        this.isAvailable = isAvailable;
-    }
 }

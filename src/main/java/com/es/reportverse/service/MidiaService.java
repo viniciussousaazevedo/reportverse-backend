@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface MidiaService {
 
-    void registerMidias(List<String> midiasPathList, Long publicationId);
+    List<Midia> registerMidias(List<String> midiasPathList, Long publicationId);
 
     void saveMidia(Midia midia);
 

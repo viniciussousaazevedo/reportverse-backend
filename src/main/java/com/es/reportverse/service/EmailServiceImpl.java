@@ -1,15 +1,16 @@
 package com.es.reportverse.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
-    @Autowired
+    
     private JavaMailSender emailSender;
 
     @Override

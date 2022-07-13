@@ -9,8 +9,6 @@ import lombok.*;
 @ToString
 public class MidiaDTO {
 
-    private String code;
-
-    private Long publicationId;
+    private Long id;
 
 }
