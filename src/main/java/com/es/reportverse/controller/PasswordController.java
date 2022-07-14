@@ -1,35 +1,28 @@
 package com.es.reportverse.controller;
 
 import com.es.reportverse.DTO.PasswordRecoveryDTO;
-import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.EmailService;
 import com.es.reportverse.service.PasswordService;
 import com.es.reportverse.service.TokenManagerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @RequestMapping(path = "/api/senha/")
-
+@AllArgsConstructor
 public class PasswordController {
 
     private final String SUCCESSFULLY_CHANGED_PASSWORD = "Senha alterada com sucesso.";
 
-    @Autowired
     AppUserService appUserService;
 
-    @Autowired
     TokenManagerService tokenManagerService;
 
-    @Autowired
     EmailService emailService;
 
-    @Autowired
     PasswordService passwordService;
 
     @PostMapping("/esqueci-senha")

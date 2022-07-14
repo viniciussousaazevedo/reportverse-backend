@@ -1,7 +1,7 @@
 package com.es.reportverse.DTO;
 
 import lombok.*;
-import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,8 +9,6 @@ import java.util.List;
 @ToString
 public class MediaDTO {
 
-    private String code;
-
-    private Long publicationId;
+    private Long id;
 
 }

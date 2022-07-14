@@ -2,38 +2,32 @@ package com.es.reportverse.service;
 
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.Media;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
-import com.es.reportverse.DTO.MediaDTO;
 
 import com.es.reportverse.repository.MediaRepository;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class MediaServiceImpl implements MediaService {
 
-    private final static String MEDIA_ERROR = "Ocorreu algum erro inesperado no upload da mídia.";
+    private final static String MEDIA_ERROR = "Ocorreu algum erro no upload da mídia.";
 
-    @Autowired
     private MediaRepository mediaRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     public void registerMedias(List<String> mediasPathList, Long publicationId) {
-
         try {
 
             for (String mediaPath : mediasPathList) {
 
                 String codeMedia = this.encodeMedia(mediaPath);
 
-                MediaDTO mediaDTO = new MediaDTO(codeMedia, publicationId);
-                Media media = this.modelMapper.map(mediaDTO, Media.class);
+                Media media = new Media(codeMedia, publicationId);
                 this.saveMedia(media);
             }
 

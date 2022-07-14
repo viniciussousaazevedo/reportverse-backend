@@ -11,8 +11,8 @@ import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.TokenManagerService;
 import com.es.reportverse.service.AppUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +26,14 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/usuario/")
+@RequestMapping(path = "/api/usuario")
+@AllArgsConstructor
 public class AppUserController {
 
-    @Autowired
     AppUserService appUserService;
 
-    @Autowired
     ModelMapper modelMapper;
 
-    @Autowired
     TokenManagerService tokenDecoder;
 
     @PostMapping("/cadastro")

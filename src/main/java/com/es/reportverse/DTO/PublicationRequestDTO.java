@@ -7,7 +7,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class PublicationDTO {
+public class PublicationRequestDTO {
 
     private String description;
 

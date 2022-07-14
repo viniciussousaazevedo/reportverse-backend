@@ -1,61 +1,54 @@
 package com.es.reportverse.service;
 
-import com.es.reportverse.DTO.PublicationDTO;
+import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
+import com.es.reportverse.model.appUserReaction.AppUserReaction;
 import com.es.reportverse.repository.PublicationRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
-import com.es.reportverse.service.TokenManagerService;
 
 @Service
-@Transactional
+@AllArgsConstructor
 public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
     private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
 
-    @Autowired
     private PublicationRepository publicationRepository;
 
-    @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     private TokenManagerService tokenDecoder;
 
-    @Autowired
-    private AppUserService appUserService;
-
     @Override
-    public Publication registerPublication(PublicationDTO publicationRegistrationDTO, HttpServletRequest request) {
+    public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
 
         Publication publication = this.modelMapper.map(publicationRegistrationDTO, Publication.class);
         publication.setAuthorId(user.getId());
         publication.setIsAvailable(true);
-        publication.setQttComplaints(0);
-        publication.setQttLikes(0);
+        publication.setLikes(new ArrayList<>());
 
         this.savePublication(publication);
         return publication;
     }
 
     @Override
-    public void savePublication(Publication publication) {
-        this.publicationRepository.save(publication);
+    public Publication savePublication(Publication publication) {
+        return this.publicationRepository.save(publication);
     }
 
     @Override
@@ -83,30 +76,27 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication manipulatePublicationReports(AppUser user, Long publicationId) {
+    public Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction) {
         Publication publication = this.getPublication(publicationId);
-        Set<Long> reportedPublicationsIds = user.getReportedPublicationsIds();
-        int manipulation;
 
-        if (reportedPublicationsIds.contains(publicationId)) {
-            manipulation = -1;
-            reportedPublicationsIds.remove(publicationId);
+        @SuppressWarnings("unchecked")
+        List<AppUserReaction> reactionList =
+                reaction instanceof AppUserLike ?
+                        (List) publication.getLikes() :
+                        (List) publication.getReports();
+
+        List<AppUserReaction> userLike = reactionList.stream().filter(
+                l -> l.getAppUser().getId().equals(user.getId())
+        ).collect(Collectors.toList());
+
+        if (userLike.isEmpty()) {
+            reaction.setAppUser(user);
+            reactionList.add(reaction);
         } else {
-            manipulation = 1;
-            reportedPublicationsIds.add(publicationId);
+            reactionList.remove(userLike.get(0));
         }
 
-        publication.setQttComplaints(publication.getQttComplaints() + manipulation);
-        this.savePublication(publication);
-        this.appUserService.saveUser(user);
-
-
-        return publication;
-    }
-
-    @Override
-    public List<Publication> getAllPublication() {
-        return publicationRepository.findAll();
+        return this.savePublication(publication);
     }
 
     @Override

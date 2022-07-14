@@ -1,45 +1,47 @@
 package com.es.reportverse.controller;
 
-import com.es.reportverse.DTO.PublicationDTO;
-import com.es.reportverse.enums.UserRole;
+import com.es.reportverse.DTO.MediaDTO;
+import com.es.reportverse.DTO.PublicationRequestDTO;
+import com.es.reportverse.DTO.PublicationResponseDTO;
+import com.es.reportverse.model.Media;
+import com.es.reportverse.model.appUserReaction.AppUserLike;
+import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
 import com.es.reportverse.service.MediaService;
 import com.es.reportverse.service.TokenManagerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/publicacao")
+@AllArgsConstructor
 public class PublicationController {
 
-    @Autowired
     PublicationService publicationService;
 
-    @Autowired
     AppUserService appUserService;
 
-    @Autowired
     MediaService mediaService;
 
-    @Autowired
     TokenManagerService tokenManager;
 
+    ModelMapper modelMapper;
+
     @PostMapping("/cadastro")
-    public ResponseEntity<?> registerPublication(@RequestBody PublicationDTO publicationDTO, HttpServletRequest request) {
+    public ResponseEntity<?> registerPublication(@RequestBody PublicationRequestDTO publicationRequestDTO, HttpServletRequest request) {
+        Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
+        this.mediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
 
-        Publication publication = this.publicationService.registerPublication(publicationDTO, request);
-
-        this.mediaService.registerMedias(publicationDTO.getMediasPathList(), publication.getId());
-
-        return new ResponseEntity<>(publicationDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.CREATED);
     }
 
     @GetMapping("/mapa")
@@ -49,13 +51,38 @@ public class PublicationController {
 
     @GetMapping("/{publicationId}")
     public ResponseEntity<?> getPublication(@PathVariable("publicationId") Long publicationId) {
-        return new ResponseEntity<>(this.publicationService.getPublication(publicationId), HttpStatus.OK);
+        Publication publication = this.publicationService.getPublication(publicationId);
+
+
+        // TODO testar e adicionar filtragem de visibilidade de publicação (nas duas UCs passadas)
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.OK);
     }
 
-    @PostMapping("/denunciar/{publicationId}")
+    @PostMapping("/curtir/{publicationId}")
+    public ResponseEntity<?> manipulatePublicationLikes(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserLike());
+
+
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+    }
+
+    @PostMapping("/reportar/{publicationId}")
     public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
-        return new ResponseEntity<>(this.publicationService.manipulatePublicationReports(user, publicationId), HttpStatus.OK);
+        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserReport());
+
+
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+    }
+
+    private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
+
+        List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
+        PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
+        publicationResponseDTO.setMedias(modelMapper.map(medias, new TypeToken<List<MediaDTO>>() {}.getType()));
+
+        return publicationResponseDTO;
     }
 
     @GetMapping("/exibirDenunciasAutor")

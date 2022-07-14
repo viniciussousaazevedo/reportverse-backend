@@ -3,7 +3,7 @@ package com.es.reportverse.service;
 import com.es.reportverse.DTO.PasswordRecoveryDTO;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class PasswordServiceImpl implements PasswordService{
 
     private final int MINUTES_FOR_TOKEN_EXPIRED = 15;
@@ -19,10 +20,8 @@ public class PasswordServiceImpl implements PasswordService{
 
     private final String PASSWORD_RECOVERY_PATH = "localhost:8080/api/senha/trocar-senha/%s";
 
-    @Autowired
     AppUserService appUserService;
 
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override

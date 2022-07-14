@@ -2,7 +2,6 @@ package com.es.reportverse.model;
 
 import com.es.reportverse.enums.UserRole;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,14 +12,9 @@ import java.util.*;
 
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AppUser implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class AppUser extends GenericModel implements UserDetails {
 
     private String name;
 
@@ -40,9 +34,6 @@ public class AppUser implements UserDetails {
     private String recoveryPasswordToken;
 
     private Date recoveryPasswordTokenExpiration;
-
-    @ElementCollection
-    private Set<Long> reportedPublicationsIds;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
