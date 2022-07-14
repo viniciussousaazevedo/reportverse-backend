@@ -36,7 +36,7 @@ public class Publication {
     private Boolean isResolved = false;
 
     public Publication(String description, String longitude, String latitude, Long authorId, int qttComplaints, int qttLikes,
-    Boolean isAuthorAnonymous, Boolean isSolved, Boolean isAvailable, Boolean isResolved) {
+    Boolean isAuthorAnonymous, Boolean isAvailable, Boolean isResolved) {
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
