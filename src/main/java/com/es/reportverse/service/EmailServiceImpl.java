@@ -15,6 +15,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public String sendPasswordRecoveryByEmail(String to, String recoveryLink) {
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("reportverse1@gmail.com");
         message.setTo(to);

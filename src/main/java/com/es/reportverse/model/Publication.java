@@ -1,7 +1,6 @@
 package com.es.reportverse.model;
 
 import com.es.reportverse.model.appUserReaction.AppUserLike;
-import com.es.reportverse.model.appUserReaction.AppUserReaction;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,4 +33,7 @@ public class Publication extends GenericModel {
     private Boolean isAuthorAnonymous = false;
 
     private Boolean isAvailable = true;
+
+    private Boolean isResolved = false;
+
 }

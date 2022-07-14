@@ -17,6 +17,6 @@ public class PublicationRequestDTO {
 
     private Boolean isAuthorAnonymous;
 
-    private List<String> midiasPathList;
+    private List<String> mediasPathList;
 
 }

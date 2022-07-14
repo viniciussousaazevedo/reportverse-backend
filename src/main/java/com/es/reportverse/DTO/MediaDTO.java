@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MidiaDTO {
+public class MediaDTO {
 
     private Long id;
 

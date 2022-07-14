@@ -2,6 +2,7 @@ package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
+    private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
 
     private PublicationRepository publicationRepository;
 
@@ -33,10 +35,10 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
 
-        AppUser appUser = tokenDecoder.decodeAppUserToken(request);
+        AppUser user = tokenDecoder.decodeAppUserToken(request);
 
         Publication publication = this.modelMapper.map(publicationRegistrationDTO, Publication.class);
-        publication.setAuthorId(appUser.getId());
+        publication.setAuthorId(user.getId());
         publication.setIsAvailable(true);
         publication.setLikes(new ArrayList<>());
 
@@ -95,6 +97,41 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         return this.savePublication(publication);
+    }
+
+    @Override
+    public List<Publication> getAllPublication() {
+        return publicationRepository.findAll();
+    }
+
+    @Override
+    public List<Publication> getPublicationsByAuthorId(AppUser user) {
+
+        List<Publication> publicationsList = new ArrayList<>();
+
+        if (user.getUserRole() == UserRole.ADMINISTRADOR) {
+            publicationsList = publicationRepository.findAll();
+        } else if (user.getUserRole() == UserRole.UNIVERSITARIO) {
+            publicationsList = publicationRepository.findByAuthorId(user.getId());
+        }
+
+        return publicationsList;
+    }
+
+    @Override
+    public Publication resolvePublication(Long id, AppUser user) {
+
+        Publication publication = this.getPublication(id);
+
+        if (user.getId().equals(publication.getAuthorId())) {
+            publication.setIsResolved(true);
+            publication.setIsAvailable(false);
+            this.savePublication(publication);
+        } else {
+            throw new ApiRequestException(String.format(USER_IS_NOT_AUTHOR, user.getId()));
+        }
+        
+        return publication;
     }
 
 }

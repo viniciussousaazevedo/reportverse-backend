@@ -1,6 +1,8 @@
 # UFCG Reportverse
 UFCG Reportverse é uma plataforma que tem como motivação os problemas de infraestrutura na Universidade Federal de Campina Grande. Principalmente após a pandemia, percebe-se que muitos locais da universidade se encontram destruídos, negligenciados ou com sérios problemas de infraestrutura. Com isso, há a necessidade da criação de um espaço para amplificar as denúncias por frequentadores do campus e localizar problemas para enviá-los diretamente para as autoridades que podem alterar esta situação. Esses dados irão ajudar na mobilidade e acessibilidade no ambiente universitário, além de pontuar demandas urgentes para a Universidade. O link do repositório contendo os documentos e artefatos da aplicação se encontram [aqui](https://drive.google.com/drive/folders/1uzRhs1d5okk7KxkiMmlW1FqSthPQ5Tee).
 
+Você pode acessar a documentação via Swagger da API por meio do Heroku [neste link](https://reportverse.herokuapp.com/swagger-ui/#/)
+
 
 ### Integrantes:
 - [Filipe Ramalho](https://github.com/musquitinh0)

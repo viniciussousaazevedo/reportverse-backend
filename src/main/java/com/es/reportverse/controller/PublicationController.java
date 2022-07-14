@@ -1,14 +1,14 @@
 package com.es.reportverse.controller;
 
-import com.es.reportverse.DTO.MidiaDTO;
+import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
-import com.es.reportverse.model.Midia;
+import com.es.reportverse.model.Media;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
-import com.es.reportverse.service.MidiaService;
+import com.es.reportverse.service.MediaService;
 import com.es.reportverse.service.TokenManagerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class PublicationController {
 
     AppUserService appUserService;
 
-    MidiaService midiaService;
+    MediaService mediaService;
 
     TokenManagerService tokenManager;
 
@@ -40,7 +39,7 @@ public class PublicationController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerPublication(@RequestBody PublicationRequestDTO publicationRequestDTO, HttpServletRequest request) {
         Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
-        this.midiaService.registerMidias(publicationRequestDTO.getMidiasPathList(), publication.getId());
+        this.mediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.CREATED);
     }
@@ -79,10 +78,22 @@ public class PublicationController {
 
     private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
 
-        List<Midia> medias = this.midiaService.getMidiasByPublicationId(publication.getId());
+        List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
         PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
-        publicationResponseDTO.setMedias(modelMapper.map(medias, new TypeToken<List<MidiaDTO>>() {}.getType()));
+        publicationResponseDTO.setMedias(modelMapper.map(medias, new TypeToken<List<MediaDTO>>() {}.getType()));
 
         return publicationResponseDTO;
+    }
+
+    @GetMapping("/exibirDenunciasAutor")
+    public ResponseEntity<?> getPublicationsByAuthorId(HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(this.publicationService.getPublicationsByAuthorId(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/resolverDenuncia/{publicationId}")
+    public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
 }

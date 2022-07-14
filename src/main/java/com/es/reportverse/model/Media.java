@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class Midia extends GenericModel {
+public class Media extends GenericModel{
 
     @Column(columnDefinition = "text")
     private String code;

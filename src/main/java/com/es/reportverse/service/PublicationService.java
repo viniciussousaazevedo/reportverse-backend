@@ -20,4 +20,8 @@ public interface PublicationService {
     List<PublicationLocationDTO> getPublicationsLocations();
 
     Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction);
+
+    List<Publication> getPublicationsByAuthorId(AppUser user);
+
+    Publication resolvePublication(Long id, AppUser user);
 }
