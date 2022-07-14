@@ -12,4 +12,5 @@ public interface MediaService {
     List<Media> getMediasByPublicationId(Long publicationId);
 
     String encodeMedia(String mediaPath) throws Exception;
+
 }

@@ -100,11 +100,6 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public List<Publication> getAllPublication() {
-        return publicationRepository.findAll();
-    }
-
-    @Override
     public List<Publication> getPublicationsByAuthorId(AppUser user) {
 
         List<Publication> publicationsList = new ArrayList<>();
