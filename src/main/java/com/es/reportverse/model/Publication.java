@@ -35,4 +35,7 @@ public class Publication extends GenericModel {
     private Boolean isAvailable = true;
 
     private Boolean isResolved = false;
+
+    private Boolean needsReview = false;
+
 }

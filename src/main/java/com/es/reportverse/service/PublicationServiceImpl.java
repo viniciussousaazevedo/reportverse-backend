@@ -8,6 +8,7 @@ import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
+import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.repository.PublicationRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,8 @@ public class PublicationServiceImpl implements PublicationService {
     private ModelMapper modelMapper;
 
     private TokenManagerService tokenDecoder;
+
+    private EmailService emailService;
 
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
@@ -94,6 +97,21 @@ public class PublicationServiceImpl implements PublicationService {
             reactionList.add(reaction);
         } else {
             reactionList.remove(userLike.get(0));
+        }
+
+        if(reaction instanceof AppUserReport){
+            if(reactionList.size()>=5){
+                if(!publication.getNeedsReview()){
+                    publication.setNeedsReview(true);
+                    publication.setIsAvailable(false);
+                    this.emailService.notifyAdminsReportedPublication(publication);
+                }
+            } else {
+                if(publication.getNeedsReview()){
+                    publication.setNeedsReview(false);
+                    publication.setIsAvailable(true);
+                }
+            }
         }
 
         return this.savePublication(publication);
