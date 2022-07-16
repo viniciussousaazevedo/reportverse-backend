@@ -1,8 +1,11 @@
 package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.UserRegistrationDTO;
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.model.AppUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.Collection;
 
 public interface AppUserService extends UserDetailsService {
 
@@ -15,5 +18,7 @@ public interface AppUserService extends UserDetailsService {
     AppUser getUserByRecoveryPasswordToken(String recoveryPasswordToken);
 
     void checkPasswordConfirmation(String password, String passwordConfirmation);
+
+    Collection<AppUser> findAllByUserRole(UserRole userRole);
 
 }
