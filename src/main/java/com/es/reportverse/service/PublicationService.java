@@ -7,6 +7,7 @@ import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
 
 public interface PublicationService {
@@ -24,4 +25,6 @@ public interface PublicationService {
     List<Publication> getPublicationsByAuthorId(AppUser user);
 
     Publication resolvePublication(Long id, AppUser user);
+
+    Collection<Publication> findAllByNeedsReview(Boolean needsReview);
 }

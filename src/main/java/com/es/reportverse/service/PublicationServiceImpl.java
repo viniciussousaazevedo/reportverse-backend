@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -145,6 +146,11 @@ public class PublicationServiceImpl implements PublicationService {
         }
         
         return publication;
+    }
+
+    @Override
+    public Collection<Publication> findAllByNeedsReview(Boolean needsReview) {
+        return this.publicationRepository.findAllByNeedsReview(needsReview);
     }
 
 }
