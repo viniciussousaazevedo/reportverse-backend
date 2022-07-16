@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.DTO.UserRegistrationDTO;
 import com.es.reportverse.DTO.UserDTO;
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.service.TokenManagerService;
@@ -50,7 +51,7 @@ public class AppUserController {
     // Apenas para teste , apagar mais tarde
     @GetMapping("/getAdmins")
     public ResponseEntity<?> getAdmins(){
-        return new ResponseEntity<>(this.appUserService.findAllAdmins(),HttpStatus.OK);
+        return new ResponseEntity<>(this.appUserService.findAllByUserRole(UserRole.ADMINISTRADOR),HttpStatus.OK);
     }
 
     @GetMapping("/token/refresh")

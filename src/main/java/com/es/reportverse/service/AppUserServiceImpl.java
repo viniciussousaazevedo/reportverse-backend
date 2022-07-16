@@ -100,6 +100,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public Collection<AppUser> findAllByUserRole(UserRole userRole) {
+        return this.appUserRepository.findAllByUserRole(userRole);
+    }
+
+    @Override
     public Publication updatePublicationsToCheck(Collection<AppUser> admins, Publication publication) {
         if(publication.getQttComplaints() >= 5 || publication.getNeedsReview()){
             for (AppUser admin : admins){

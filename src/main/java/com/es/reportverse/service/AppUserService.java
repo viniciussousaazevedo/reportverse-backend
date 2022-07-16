@@ -1,6 +1,7 @@
 package com.es.reportverse.service;
 
 import com.es.reportverse.DTO.UserRegistrationDTO;
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,8 @@ public interface AppUserService extends UserDetailsService {
     void checkPasswordConfirmation(String password, String passwordConfirmation);
 
     Collection<AppUser> findAllAdmins();
+
+    Collection<AppUser> findAllByUserRole(UserRole userRole);
 
     Publication updatePublicationsToCheck(Collection<AppUser> admins, Publication publication);
 
