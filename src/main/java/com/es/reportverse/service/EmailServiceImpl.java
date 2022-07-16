@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
             message.setSubject("Uma publicação foi denunciada por usuários como imprópria" );
             message.setText(
                     "Caro " + admin.getName() + " , a publicação de identificação " + publication.getId()
-                    + "foi denunciada pelos usuários como imprópria. Favor realizar a verificação da mesma."
+                    + " foi denunciada pelos usuários como imprópria. Favor realizar a verificação da mesma."
             );
             emailSender.send(message);
         }
