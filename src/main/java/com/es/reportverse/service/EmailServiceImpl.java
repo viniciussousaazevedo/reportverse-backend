@@ -16,7 +16,7 @@ public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
 
-    final String NOTIFY_ADMINS_EMAILS_SENDED = "Administradores foram notificados a respeito da publicação."
+    final String NOTIFY_ADMINS_EMAILS_SENDED = "Administradores foram notificados a respeito da publicação.";
     
     private JavaMailSender emailSender;
 
