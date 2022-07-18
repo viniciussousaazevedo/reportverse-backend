@@ -24,4 +24,6 @@ public interface PublicationService {
     List<Publication> getPublicationsByAuthorId(AppUser user);
 
     Publication resolvePublication(Long id, AppUser user);
+
+    List<Publication> getPublicationsToAnalysis(AppUser user);
 }

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -85,6 +87,19 @@ public class PublicationController {
         return publicationResponseDTO;
     }
 
+    private List<PublicationResponseDTO> buildListPublicationsReponseDTO(List<Publication> publicationsList) {
+        List<PublicationResponseDTO> publicationsListResponseDTO = new ArrayList<>();
+
+        for (Publication publication : publicationsList) {
+            List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
+            PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
+            publicationResponseDTO.setMedias(modelMapper.map(medias, new TypeToken<List<MediaDTO>>() {}.getType()));
+            publicationsListResponseDTO.add(publicationResponseDTO);
+        }
+
+        return publicationsListResponseDTO;
+    }
+
     @GetMapping("/exibirDenunciasAutor")
     public ResponseEntity<?> getPublicationsByAuthorId(HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
@@ -95,5 +110,11 @@ public class PublicationController {
     public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
+    }
+
+    @GetMapping("/exibirPublicacoesEmAnalise")
+    public ResponseEntity<?> getPublicationsToAnalysis(HttpServletRequest request) {
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        return new ResponseEntity<>(buildListPublicationsReponseDTO(this.publicationService.getPublicationsToAnalysis(user)), HttpStatus.OK);
     }
 }

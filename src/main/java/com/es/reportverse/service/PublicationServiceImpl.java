@@ -25,6 +25,7 @@ public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
     private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
+    private final static String USER_IS_NOT_ADMIN = "Usuário com id %s não é um administrador.";
 
     private PublicationRepository publicationRepository;
 
@@ -127,6 +128,24 @@ public class PublicationServiceImpl implements PublicationService {
         }
         
         return publication;
+    }
+
+    @Override
+    public List<Publication> getPublicationsToAnalysis(AppUser user) {
+        List<Publication> publicationsList = new ArrayList<>();
+
+        if (user.getUserRole() == UserRole.ADMINISTRADOR) {
+            List<Publication> allPublicationsList = publicationRepository.findAll();
+            for (Publication publication : allPublicationsList) {
+                if (publication.getReports().size() >= 5) {
+                    publicationsList.add(publication);
+                }
+            }
+        } else {
+            throw new ApiRequestException(String.format(USER_IS_NOT_ADMIN, user.getId()));
+        }
+
+        return publicationsList;
     }
 
 }
