@@ -8,7 +8,6 @@ import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
-import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.repository.PublicationRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +33,8 @@ public class PublicationServiceImpl implements PublicationService {
     private TokenManagerService tokenDecoder;
 
     private EmailService emailService;
+
+    private AppUserService appUserService;
 
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
@@ -57,13 +57,8 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public Publication getPublication(Long id) {
-        Optional<Publication> publicationOp = this.publicationRepository.findById(id);
-
-        if (publicationOp.isEmpty()) {
-            throw new ApiRequestException(String.format(PUBLICATION_NOT_FOUND, id));
-        }
-
-        return publicationOp.get();
+        return this.publicationRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException(String.format(PUBLICATION_NOT_FOUND, id)));
     }
 
     @Override
@@ -82,12 +77,16 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction) {
         Publication publication = this.getPublication(publicationId);
+        boolean isReportRelated = false;
+        List<AppUserReaction> reactionList;
 
-        @SuppressWarnings("unchecked")
-        List<AppUserReaction> reactionList =
-                reaction instanceof AppUserLike ?
-                        (List) publication.getLikes() :
-                        (List) publication.getReports();
+        if (reaction instanceof AppUserLike) {
+            reactionList = (List) publication.getLikes();
+        } else {
+            reactionList = (List) publication.getReports();
+            isReportRelated = true;
+        }
+
 
         List<AppUserReaction> userLike = reactionList.stream().filter(
                 l -> l.getAppUser().getId().equals(user.getId())
@@ -100,18 +99,14 @@ public class PublicationServiceImpl implements PublicationService {
             reactionList.remove(userLike.get(0));
         }
 
-        if(reaction instanceof AppUserReport){
-            if(reactionList.size()>=5){
-                if(!publication.getNeedsReview()){
-                    publication.setNeedsReview(true);
-                    publication.setIsAvailable(false);
-                    this.emailService.notifyAdminsReportedPublication(publication);
-                }
-            } else {
-                if(publication.getNeedsReview()){
+        if (isReportRelated){
+            if(reactionList.size() >= 5 && !publication.getNeedsReview()){
+                publication.setNeedsReview(true);
+                publication.setIsAvailable(false);
+                this.emailService.notifyAdminsReportedPublication(publication);
+            } else if(publication.getNeedsReview()){
                     publication.setNeedsReview(false);
                     publication.setIsAvailable(true);
-                }
             }
         }
 
@@ -151,6 +146,15 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public Collection<Publication> findAllByNeedsReview(Boolean needsReview) {
         return this.publicationRepository.findAllByNeedsReview(needsReview);
+    }
+
+    @Override
+    public String invalidatePublication(Long publicationId) {
+        Publication publication = this.getPublication(publicationId);
+        this.publicationRepository.delete(publication);
+
+        String authorUsername = this.appUserService.getUser(publication.getAuthorId()).getUsername();
+        return this.emailService.notifyReportedPublicationAuthor(authorUsername, publication);
     }
 
 }

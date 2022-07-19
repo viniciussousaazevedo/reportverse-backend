@@ -20,4 +20,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Collection<AppUser> findAllByUserRole(UserRole userRole);
 
+    Optional<AppUser> findById(Long id);
+
 }

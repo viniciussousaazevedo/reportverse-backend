@@ -16,41 +16,62 @@ public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
 
-    final String NOTIFY_ADMINS_EMAILS_SENDED = "Administradores foram notificados a respeito da publicação.";
+    final String REPORTED_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação foi excluída da plataforma.";
     
     private JavaMailSender emailSender;
 
     private AppUserService appUserService;
 
+    private void sendMail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(System.getenv("MAIL_USER"));
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(
+                text
+        );
+        emailSender.send(message);
+    }
+
     @Override
     public String sendPasswordRecoveryByEmail(String to, String recoveryLink) {
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("reportverse1@gmail.com");
-        message.setTo(to);
-        message.setSubject("Link para recuperação de senha");
-        message.setText(
+        this.sendMail(
+                to,
+                "Link para recuperação de senha",
                 "Este é o link para recuperação de sua senha:  " + recoveryLink
-                       );
-        emailSender.send(message);
+        );
+
         return PASSWORD_RECOVERY_EMAIL_SENT;
     }
 
     @Override
-    public String notifyAdminsReportedPublication(Publication publication) {
+    public void notifyAdminsReportedPublication(Publication publication) {
         Collection<AppUser> admins = appUserService.findAllByUserRole(UserRole.ADMINISTRADOR);
         for(AppUser admin : admins){
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("reportverse1@gmail.com");
-            message.setTo(admin.getUsername());
-            message.setSubject("Uma publicação foi denunciada por usuários como imprópria" );
-            message.setText(
-                    "Caro " + admin.getName() + " , a publicação de identificação " + publication.getId()
-                    + " foi denunciada pelos usuários como imprópria. Favor realizar a verificação da mesma."
+            this.sendMail(
+                    admin.getUsername(),
+                    "Uma publicação foi denunciada por usuários como imprópria",
+                    "Caro " + admin.getName() + ", a publicação de identificação " + publication.getId()
+                            + " foi denunciada pelos usuários como imprópria. Favor realizar a verificação da mesma."
             );
-            emailSender.send(message);
         }
-        return NOTIFY_ADMINS_EMAILS_SENDED;
     }
+
+    @Override
+    public String notifyReportedPublicationAuthor(String authorUsername, Publication publication) {
+
+        this.sendMail(
+            authorUsername,
+                "Uma publicação sua foi excluída do Reportverse",
+                "Você criou uma publicação que foi recentemente excluída do Reportverse " +
+                        "por não estar de acordo com a proposta da plataforma. " +
+                        "Solicitamos que tome mais cuidado com próximas publicações\n\n" +
+                        "Conteúdo da pubilcação excluída:\n" + publication.getDescription()
+        );
+
+        return REPORTED_PUBLICATION_AUTHOR_NOTIFIED;
+    }
+
 
 }
