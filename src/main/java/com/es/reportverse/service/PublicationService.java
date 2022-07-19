@@ -29,4 +29,6 @@ public interface PublicationService {
     Collection<Publication> findAllByNeedsReview(Boolean needsReview);
 
     String invalidatePublication(Long publicationId);
+
+    String validatePublication(Long publicationId);
 }

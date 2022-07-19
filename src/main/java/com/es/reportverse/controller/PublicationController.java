@@ -97,7 +97,7 @@ public class PublicationController {
         return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
 
-    @GetMapping("/reportadas")
+    @GetMapping("/analise/")
     public ResponseEntity<?> getReportedPublications(){
         List<PublicationResponseDTO> publicationResponseDTOList = modelMapper.map(
                 this.publicationService.findAllByNeedsReview(true),
@@ -107,9 +107,14 @@ public class PublicationController {
         return new ResponseEntity<>(publicationResponseDTOList, HttpStatus.OK);
     }
 
-    @DeleteMapping("/invalidar/{publicationId}")
+    @DeleteMapping("/analisar/{publicationId}")
     public ResponseEntity<?> invalidatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.invalidatePublication(publicationId), HttpStatus.OK);
+    }
+
+    @PutMapping("/analisar/{publicationId}")
+    public ResponseEntity<?> validatePublication(@PathVariable("publicationId") Long publicationId) {
+        return new ResponseEntity<>(this.publicationService.validatePublication(publicationId), HttpStatus.OK);
     }
 
     

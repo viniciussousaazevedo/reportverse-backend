@@ -16,8 +16,10 @@ public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
 
-    final String REPORTED_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação foi excluída da plataforma.";
-    
+    final String EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação foi excluída da plataforma.";
+
+    final String AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação voltou ao ar na plataforma";
+
     private JavaMailSender emailSender;
 
     private AppUserService appUserService;
@@ -59,18 +61,32 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public String notifyReportedPublicationAuthor(String authorUsername, Publication publication) {
+    public String notifyExcludedPublicationAuthor(String authorUsername, Publication publication) {
+
+        this.sendMail(
+                authorUsername,
+                "Uma publicação sua foi excluída do Reportverse",
+                "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
+                        "Após um período de análise, foi decidido que sua publicação não condiz com as diretrizes da plataforma, por isso foi excluída. " +
+                        "Solicitamos maior cuidado no conteúdo a ser postado em próximas publicações." +
+                        "\nConteúdo da publicação: \n" + publication.getDescription()
+        );
+
+        return EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED;
+    }
+
+    @Override
+    public String notifyAvailablePublicationAuthor(String authorUsername, Publication publication) {
 
         this.sendMail(
             authorUsername,
-                "Uma publicação sua foi excluída do Reportverse",
-                "Você criou uma publicação que foi recentemente excluída do Reportverse " +
-                        "por não estar de acordo com a proposta da plataforma. " +
-                        "Solicitamos que tome mais cuidado com próximas publicações\n\n" +
-                        "Conteúdo da pubilcação excluída:\n" + publication.getDescription()
+            "Uma publicação sua voltou ao ar no Reportverse",
+            "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
+                    "Após um período de análise, foi decidido que sua publicação pode continuar na plataforma. " +
+                    "\nConteúdo da publicação: \n" + publication.getDescription()
         );
 
-        return REPORTED_PUBLICATION_AUTHOR_NOTIFIED;
+        return AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED;
     }
 
 

@@ -104,6 +104,7 @@ public class PublicationServiceImpl implements PublicationService {
                 publication.setNeedsReview(true);
                 publication.setIsAvailable(false);
                 this.emailService.notifyAdminsReportedPublication(publication);
+                // TODO o dono da publicação não deveria ser notificado também? Levar essa ideia adiante junto do front.
             } else if(publication.getNeedsReview()){
                     publication.setNeedsReview(false);
                     publication.setIsAvailable(true);
@@ -154,7 +155,19 @@ public class PublicationServiceImpl implements PublicationService {
         this.publicationRepository.delete(publication);
 
         String authorUsername = this.appUserService.getUser(publication.getAuthorId()).getUsername();
-        return this.emailService.notifyReportedPublicationAuthor(authorUsername, publication);
+        return this.emailService.notifyExcludedPublicationAuthor(authorUsername, publication);
+    }
+
+    @Override
+    public String validatePublication(Long publicationId) {
+       Publication publication = this.getPublication(publicationId);
+       publication.setIsAvailable(true);
+       publication.setNeedsReview(false);
+       publication.getReports().clear();
+
+       this.savePublication(publication);
+       String authorUsername = this.appUserService.getUser(publication.getAuthorId()).getUsername();
+        return this.emailService.notifyAvailablePublicationAuthor(authorUsername, publication);
     }
 
 }
