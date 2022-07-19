@@ -1,5 +1,6 @@
 package com.es.reportverse.security.config;
 
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.security.filter.CustomAuthenticationFilter;
 import com.es.reportverse.security.filter.CustomAuthorizationFilter;
 import com.es.reportverse.service.AppUserService;
@@ -47,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // isso conforme o andamento do projeto.
         // Exemplo de reconfiguração:
          // http.authorizeRequests().antMatchers(GET, "/api/usuarios/**").hasAnyAuthority(UserRole.UNIVERSITARIO.name());
+        //http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise/**").hasAnyAuthority(UserRole.ADMINISTRADOR.name());
 
         http.authorizeRequests().anyRequest().authenticated();
 
