@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -85,6 +88,16 @@ public class PublicationController {
         return publicationResponseDTO;
     }
 
+    private List<PublicationResponseDTO> buildPublicationsListReponseDTO(Collection<Publication> collection) {
+        List<PublicationResponseDTO> publicationsListResponseDTO = new ArrayList<>();
+
+        for (Publication publication : collection) {
+            publicationsListResponseDTO.add(buildPublicationReponseDTO(publication));
+        }
+
+        return publicationsListResponseDTO;
+    }
+
     @GetMapping("/exibirDenunciasAutor")
     public ResponseEntity<?> getPublicationsByAuthorId(HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
@@ -96,17 +109,11 @@ public class PublicationController {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
-
-    @GetMapping("/analise/")
-    public ResponseEntity<?> getReportedPublications(){
-        List<PublicationResponseDTO> publicationResponseDTOList = modelMapper.map(
-                this.publicationService.findAllByNeedsReview(true),
-                new TypeToken<List<PublicationResponseDTO>>() {}.getType()
-        );
-        
-        return new ResponseEntity<>(publicationResponseDTOList, HttpStatus.OK);
+  
+    @GetMapping("/analise")
+    public ResponseEntity<?> getPublicationsNeedReview() {
+        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
     }
-
     @DeleteMapping("/analisar/{publicationId}")
     public ResponseEntity<?> invalidatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.invalidatePublication(publicationId), HttpStatus.OK);
@@ -116,6 +123,4 @@ public class PublicationController {
     public ResponseEntity<?> validatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.validatePublication(publicationId), HttpStatus.OK);
     }
-
-    
 }
