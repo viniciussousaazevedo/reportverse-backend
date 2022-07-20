@@ -171,4 +171,9 @@ public class PublicationServiceImpl implements PublicationService {
         return this.emailService.notifyAvailablePublicationAuthor(authorUsername, publication);
     }
 
+    @Override
+    public List<Publication> getAllPublicationsAvaliable() {
+        return this.publicationRepository.findAllAvailable();
+    }
+
 }

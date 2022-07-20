@@ -114,6 +114,7 @@ public class PublicationController {
     public ResponseEntity<?> getPublicationsNeedReview() {
         return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
     }
+
     @DeleteMapping("/analisar/{publicationId}")
     public ResponseEntity<?> invalidatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.invalidatePublication(publicationId), HttpStatus.OK);
@@ -122,5 +123,10 @@ public class PublicationController {
     @PutMapping("/analisar/{publicationId}")
     public ResponseEntity<?> validatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.validatePublication(publicationId), HttpStatus.OK);
+    }
+
+    @GetMapping("/todas")
+    public ResponseEntity<?> getAllPublicationsAvaliable() {
+        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.getAllPublicationsAvaliable()), HttpStatus.OK);
     }
 }

@@ -31,4 +31,6 @@ public interface PublicationService {
     String invalidatePublication(Long publicationId);
 
     String validatePublication(Long publicationId);
+
+    List<Publication> getAllPublicationsAvaliable();
 }
