@@ -25,7 +25,6 @@ public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
     private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
-    private final static String USER_IS_NOT_ADMIN = "Usuário com id %s não é um administrador";
 
     private PublicationRepository publicationRepository;
 
