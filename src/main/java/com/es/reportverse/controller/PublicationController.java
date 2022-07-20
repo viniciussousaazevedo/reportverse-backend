@@ -56,12 +56,12 @@ public class PublicationController {
     public ResponseEntity<?> getPublication(@PathVariable("publicationId") Long publicationId) {
         Publication publication = this.publicationService.getPublication(publicationId);
 
-
-        // TODO testar e adicionar filtragem de visibilidade de publicação (nas duas UCs passadas)
+        // TODO adicionar filtragem de visibilidade de publicação
+        // Ou criar novo endpoint apenas para get de publicações disponíveis
         return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.OK);
     }
 
-    @PostMapping("/curtir/{publicationId}")
+    @PutMapping("/curtir/{publicationId}")
     public ResponseEntity<?> manipulatePublicationLikes(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserLike());
@@ -70,7 +70,7 @@ public class PublicationController {
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
     }
 
-    @PostMapping("/reportar/{publicationId}")
+    @PutMapping("/reportar/{publicationId}")
     public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserReport());
@@ -104,16 +104,23 @@ public class PublicationController {
         return new ResponseEntity<>(this.publicationService.getPublicationsByAuthorId(user), HttpStatus.OK);
     }
 
-    @PostMapping("/resolverDenuncia/{publicationId}")
+    @PutMapping("/resolverDenuncia/{publicationId}")
     public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
     }
-
+  
     @GetMapping("/analise")
     public ResponseEntity<?> getPublicationsNeedReview() {
         return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
     }
+    @DeleteMapping("/analisar/{publicationId}")
+    public ResponseEntity<?> invalidatePublication(@PathVariable("publicationId") Long publicationId) {
+        return new ResponseEntity<>(this.publicationService.invalidatePublication(publicationId), HttpStatus.OK);
+    }
 
-    
+    @PutMapping("/analisar/{publicationId}")
+    public ResponseEntity<?> validatePublication(@PathVariable("publicationId") Long publicationId) {
+        return new ResponseEntity<>(this.publicationService.validatePublication(publicationId), HttpStatus.OK);
+    }
 }

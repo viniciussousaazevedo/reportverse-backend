@@ -6,5 +6,9 @@ public interface EmailService {
 
     String sendPasswordRecoveryByEmail(String to, String recoveryLink);
 
-    String notifyAdminsReportedPublication(Publication publication);
+    void notifyAdminsReportedPublication(Publication publication);
+
+    String notifyExcludedPublicationAuthor(String authorUsername, Publication publication);
+
+    String notifyAvailablePublicationAuthor(String authorUsername, Publication publication);
 }

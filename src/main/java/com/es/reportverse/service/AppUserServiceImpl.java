@@ -64,24 +64,20 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser getUser(String username) {
-        Optional<AppUser> appUserOp = this.appUserRepository.findByUsername(username);
+        return this.appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
+    }
 
-        if (appUserOp.isEmpty()) {
-            throw new ApiRequestException(USER_NOT_FOUND);
-        }
-
-        return appUserOp.get();
+    @Override
+    public AppUser getUser(Long id) {
+        return this.appUserRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
     }
 
     @Override
     public AppUser getUserByRecoveryPasswordToken(String recoveryPasswordToken) {
-        Optional<AppUser> appUserOp = this.appUserRepository.findByRecoveryPasswordToken(recoveryPasswordToken);
-
-        if (appUserOp.isEmpty()) {
-            throw new ApiRequestException(USER_NOT_FOUND);
-        }
-
-        return appUserOp.get();
+        return this.appUserRepository.findByRecoveryPasswordToken(recoveryPasswordToken)
+                .orElseThrow(() -> new ApiRequestException(USER_NOT_FOUND));
     }
 
     @Override
