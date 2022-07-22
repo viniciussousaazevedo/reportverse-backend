@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,12 +31,14 @@ public class Publication extends GenericModel {
     @OneToMany(cascade = CascadeType.ALL)
     private List<AppUserReport> reports;
 
-    private Boolean isAuthorAnonymous = false;
+    private Boolean isAuthorAnonymous;
 
-    private Boolean isAvailable = true;
+    private Boolean isAvailable;
 
-    private Boolean isResolved = false;
+    private Boolean isResolved;
 
-    private Boolean needsReview = false;
+    private Boolean needsReview;
+
+    private Date creationDate;
 
 }

@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @Data
-public class GenericModel {
+public abstract class GenericModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

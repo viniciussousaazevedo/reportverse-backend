@@ -3,12 +3,12 @@ package com.es.reportverse.controller;
 import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
-import com.es.reportverse.model.Media;
+import com.es.reportverse.model.media.PublicationMedia;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
 import com.es.reportverse.service.AppUserService;
-import com.es.reportverse.service.MediaService;
+import com.es.reportverse.service.PublicationMediaService;
 import com.es.reportverse.service.TokenManagerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,7 +33,7 @@ public class PublicationController {
 
     AppUserService appUserService;
 
-    MediaService mediaService;
+    PublicationMediaService publicationMediaService;
 
     TokenManagerService tokenManager;
 
@@ -42,7 +42,7 @@ public class PublicationController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> registerPublication(@RequestBody PublicationRequestDTO publicationRequestDTO, HttpServletRequest request) {
         Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
-        this.mediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
+        this.publicationMediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.CREATED);
     }
@@ -81,9 +81,9 @@ public class PublicationController {
 
     private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
 
-        List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
+        List<PublicationMedia> publicationMedia = this.publicationMediaService.getMediasByPublicationId(publication.getId());
         PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
-        publicationResponseDTO.setMedias(modelMapper.map(medias, new TypeToken<List<MediaDTO>>() {}.getType()));
+        publicationResponseDTO.setMedias(modelMapper.map(publicationMedia, new TypeToken<List<MediaDTO>>() {}.getType()));
 
         return publicationResponseDTO;
     }

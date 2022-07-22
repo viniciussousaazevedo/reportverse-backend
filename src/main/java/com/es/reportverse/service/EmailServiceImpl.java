@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom(System.getenv("MAIL_USER"));
+        message.setFrom(System.getenv("SPRING_MAIL_USER"));
         message.setTo(to);
         message.setSubject(subject);
         message.setText(
