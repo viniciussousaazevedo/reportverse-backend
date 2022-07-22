@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.Decoder.Text;
+
+import com.es.reportverse.utils.BadWordsFilter;
 
 import java.util.ArrayList;
 import java.util.Collection;
