@@ -87,6 +87,7 @@ public class PublicationController {
     @PutMapping("/comentar/{publicationId}")
     public ResponseEntity<?> manipulatePublicationComments(@PathVariable("publicationId") Long publicationId, @RequestBody CommentDTO commentDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
+        BadWordsFilter.filterText(commentDTO.getText());
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserComment(commentDTO.getText(),commentDTO.getIsAnonymous()));
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
