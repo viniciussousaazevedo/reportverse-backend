@@ -9,6 +9,7 @@ import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
 import com.es.reportverse.repository.PublicationRepository;
+import com.es.reportverse.utils.BadWordsFilter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
+
+        // verifica se a descrição da publicação tem alguma palavra imprópria
+        BadWordsFilter.filterText(publicationRegistrationDTO.getDescription());
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
 

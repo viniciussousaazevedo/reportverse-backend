@@ -11,7 +11,7 @@ import java.util.Map;
 import com.es.reportverse.exception.ApiRequestException;
 
 public class BadWordsFilter {
-    private final static String BAD_WORD_FOUNDED = "O texto inserido foi bloqueado porque uma plavra imprópria foi encontrado nele.";
+    private final static String BAD_WORD_FOUNDED = "O texto inserido foi bloqueado porque uma palavra imprópria foi encontrada nele.";
 
     static Map<String, String[]> words = new HashMap<>();
     
@@ -27,19 +27,16 @@ public class BadWordsFilter {
                 String[] content = null;
                 try {
                     content = line.split(",");
-                    if(content.length == 0) {
-                        continue;
-                    }
                     String word = content[0];
-                    String[] ignore_in_combination_with_words = new String[]{};
+                    String[] ignoreInCombinationWithWords = new String[]{};
                     if(content.length > 1) {
-                        ignore_in_combination_with_words = content[1].split("_");
+                        ignoreInCombinationWithWords = content[1].split("_");
                     }
 
                     if(word.length() > largestWordLength) {
                         largestWordLength = word.length();
                     }
-                    words.put(word.replaceAll(" ", ""), ignore_in_combination_with_words);
+                    words.put(word.replaceAll(" ", ""), ignoreInCombinationWithWords);
 
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -105,6 +102,7 @@ public class BadWordsFilter {
     }
 
     public static String filterText(String input) {
+        BadWordsFilter.loadConfigs();
         ArrayList<String> badWords = badWordsFound(input);
         if(badWords.size() > 0) {
             throw new ApiRequestException(String.format(BAD_WORD_FOUNDED));
@@ -115,6 +113,7 @@ public class BadWordsFilter {
 
 // COMO USAR O FILTRO DE PALAVRÕES:
 // 
+// Primeiro você importa a classe: import com.es.reportverse.utils.BadWordsFilter;
 // 1) Inicializa o filtro com esta linha de código: BadWordsFilter.loadConfigs();
 // 2) É só chamar a função filterText e passar o texto que você quer que seja feito a verificação com a linha de código abaixo: 
 // BadWordsFilter.filterText("texto aqui")
@@ -130,6 +129,5 @@ public class BadWordsFilter {
 //
 // @GetMapping("/filterTest")
 // public ResponseEntity<?> testFilterBadWords() {
-//     BadWordsFilter.loadConfigs();
 //     return new ResponseEntity<>(BadWordsFilter.filterText("texto aqui"), HttpStatus.OK);
 // }
