@@ -9,6 +9,7 @@ import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
 import com.es.reportverse.repository.PublicationRepository;
+import com.es.reportverse.utils.BadWordsFilter;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,6 @@ public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
     private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
-    private final static String USER_IS_NOT_ADMIN = "Usuário com id %s não é um administrador";
 
     private PublicationRepository publicationRepository;
 
@@ -39,6 +39,9 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
+
+        // verifica se a descrição da publicação tem alguma palavra imprópria
+        BadWordsFilter.filterText(publicationRegistrationDTO.getDescription());
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
 
