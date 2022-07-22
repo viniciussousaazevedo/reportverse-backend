@@ -1,5 +1,6 @@
 package com.es.reportverse.model;
 
+import com.es.reportverse.model.appUserReaction.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import lombok.Data;
@@ -29,6 +30,9 @@ public class Publication extends GenericModel {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<AppUserReport> reports;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<AppUserComment> comments;
 
     private Boolean isAuthorAnonymous = false;
 
