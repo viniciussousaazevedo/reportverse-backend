@@ -12,5 +12,5 @@ public class AppUserComment extends AppUserReaction{
 
     private String text;
 
-    private Boolean isAnonymous = false;
+    private Boolean isAuthorAnonymous = false;
 }
