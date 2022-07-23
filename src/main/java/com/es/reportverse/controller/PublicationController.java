@@ -1,9 +1,11 @@
 package com.es.reportverse.controller;
 
+import com.es.reportverse.DTO.CommentDTO;
 import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
 import com.es.reportverse.model.Media;
+import com.es.reportverse.model.appUserReaction.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.Decoder.Text;
 
 import com.es.reportverse.utils.BadWordsFilter;
 
@@ -80,6 +81,16 @@ public class PublicationController {
 
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+    }
+
+    @PutMapping("/comentar/{publicationId}")
+    public ResponseEntity<?> manipulatePublicationComments(@PathVariable("publicationId") Long publicationId, @RequestBody CommentDTO commentDTO, HttpServletRequest request){
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        BadWordsFilter.filterText(commentDTO.getText());
+        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserComment(commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
+
+        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+
     }
 
     private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
