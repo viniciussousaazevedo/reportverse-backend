@@ -11,6 +11,6 @@ public class CommentDTO {
 
     private String text;
 
-    private Boolean isAnonymous;
+    private Boolean isAuthorAnonymous;
 
 }
