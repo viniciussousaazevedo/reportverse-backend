@@ -8,6 +8,7 @@ import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
+import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.repository.PublicationRepository;
 import com.es.reportverse.utils.BadWordsFilter;
 import lombok.AllArgsConstructor;
@@ -86,9 +87,11 @@ public class PublicationServiceImpl implements PublicationService {
 
         if (reaction instanceof AppUserLike) {
             reactionList = (List) publication.getLikes();
-        } else {
+        } else if (reaction instanceof AppUserReport){
             reactionList = (List) publication.getReports();
             isReportRelated = true;
+        } else {
+            reactionList = (List) publication.getComments();
         }
 
 
