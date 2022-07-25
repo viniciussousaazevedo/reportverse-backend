@@ -48,7 +48,9 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
     private String encodeMedia(String mediaPath) throws Exception {
 
         FileInputStream mediaStream = new FileInputStream(mediaPath);
-        return mediaService.encodeMedia(mediaStream);
+        String codedMedia = mediaService.encodeMedia(mediaStream.readAllBytes());
+        mediaStream.close();
+        return codedMedia;
     }
 
 }

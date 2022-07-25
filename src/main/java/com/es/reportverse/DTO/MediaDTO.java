@@ -11,4 +11,6 @@ public class MediaDTO {
 
     private Long id;
 
+    private String code;
+
 }

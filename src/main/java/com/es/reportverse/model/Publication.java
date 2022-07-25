@@ -2,6 +2,7 @@ package com.es.reportverse.model;
 
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Publication extends GenericModel {
 
@@ -36,6 +38,8 @@ public class Publication extends GenericModel {
     private Boolean isAvailable;
 
     private Boolean isResolved;
+
+    private Date isResolvedDate;
 
     private Boolean needsReview;
 

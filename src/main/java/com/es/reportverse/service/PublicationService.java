@@ -33,4 +33,8 @@ public interface PublicationService {
     String validatePublication(Long publicationId);
 
     List<Publication> getAllPublicationsAvaliable();
+
+    List<Publication> getAllByYearAndMonthOrderedByLikes(int year, int month);
+
+    List<Publication> getAllByIsResolvedYearAndMonth(int year, int month);
 }

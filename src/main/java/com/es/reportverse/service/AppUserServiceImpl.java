@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -45,10 +46,15 @@ public class AppUserServiceImpl implements AppUserService {
         userRegistrationDTO.setPassword(bCryptPasswordEncoder.encode(userRegistrationDTO.getPassword()));
 
         AppUser appUser = this.modelMapper.map(userRegistrationDTO, AppUser.class);
-        appUser.setUserRole(UserRole.UNIVERSITARIO);
+        setAppUserDefaultValues(appUser);
 
         this.saveUser(appUser);
         return appUser;
+    }
+
+    private void setAppUserDefaultValues(AppUser appUser) {
+        appUser.setUserRole(UserRole.UNIVERSITARIO);
+        appUser.setCreationDate(new Date());
     }
 
     private void checkUsername(String username) {
@@ -90,5 +96,10 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public Collection<AppUser> findAllByUserRole(UserRole userRole) {
         return this.appUserRepository.findAllByUserRole(userRole);
+    }
+
+    @Override
+    public List<AppUser> getUsersByYearAndMonth(int year, int month) {
+        return this.appUserRepository.findAllByYearAndMonth(year, month);
     }
 }

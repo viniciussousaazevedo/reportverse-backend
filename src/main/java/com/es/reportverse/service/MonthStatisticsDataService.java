@@ -1,15 +1,16 @@
 package com.es.reportverse.service;
 
 
-import com.es.reportverse.model.media.MonthStatisticsDataPDF;
+import com.es.reportverse.model.media.MonthStatisticsData;
+import com.itextpdf.text.DocumentException;
 
-import java.time.YearMonth;
+import java.io.FileNotFoundException;
 
 public interface MonthStatisticsDataService {
 
-    MonthStatisticsDataPDF getPDF();
+    String getPDF() throws Exception;
 
-    MonthStatisticsDataPDF saveMonthStatisticsDataPDF(MonthStatisticsDataPDF monthStatisticsDataPDF);
+    MonthStatisticsData saveMonthStatisticsDataPDF(MonthStatisticsData monthStatisticsData);
 
-    MonthStatisticsDataPDF createPDF(YearMonth yearMonth);
+    MonthStatisticsData createMonthStatisticsData(int year, int month) throws Exception;
 }

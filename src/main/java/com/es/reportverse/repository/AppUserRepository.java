@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.time.YearMonth;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -23,9 +22,10 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Collection<AppUser> findAllByUserRole(UserRole userRole);
 
-    Optional<AppUser> findById(Long id);
-
-    @Query(value = "SELECT * FROM app_user WHERE creation_date LIKE ?1", nativeQuery = true)
-    List<AppUser> findAllByYearMonth(YearMonth yearMonth);
+    @Query(value = "SELECT * FROM app_user WHERE " +
+            "EXTRACT(YEAR FROM creation_date) = ?1 AND " +
+            "EXTRACT(MONTH FROM creation_date) = ?2",
+            nativeQuery = true)
+    List<AppUser> findAllByYearAndMonth(int year, int month);
 
 }

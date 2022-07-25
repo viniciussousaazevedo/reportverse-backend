@@ -16,7 +16,7 @@ public class StatisticsController {
     private MonthStatisticsDataService monthStatisticsDataService;
 
     @GetMapping("/download")
-    public ResponseEntity<?> downloadStatistics() {
+    public ResponseEntity<?> downloadStatistics() throws Exception {
         return new ResponseEntity<>(monthStatisticsDataService.getPDF(), HttpStatus.OK);
     }
 

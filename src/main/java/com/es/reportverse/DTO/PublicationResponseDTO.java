@@ -23,8 +23,8 @@ public class PublicationResponseDTO {
 
     private List<LikeDTO> likes;
 
-    private List<MediaDTO> medias;
-
     private List<ReportDTO> reports;
+
+    private List<MediaDTO> medias;
 
 }

@@ -4,6 +4,6 @@ import java.io.FileInputStream;
 
 public interface MediaService {
 
-    String encodeMedia(FileInputStream mediaStream) throws Exception;
+    String encodeMedia(byte[] data) throws Exception;
 
 }

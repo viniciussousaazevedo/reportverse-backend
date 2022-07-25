@@ -8,6 +8,7 @@ import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
+import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.repository.PublicationRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,6 @@ public class PublicationServiceImpl implements PublicationService {
 
     private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
     private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
-    private final static String USER_IS_NOT_ADMIN = "Usuário com id %s não é um administrador";
 
     private PublicationRepository publicationRepository;
 
@@ -38,14 +39,24 @@ public class PublicationServiceImpl implements PublicationService {
     private AppUserService appUserService;
 
     @Override
-    public Publication registerPublication(PublicationRequestDTO publicationRegistrationDTO, HttpServletRequest request) {
+    public Publication registerPublication(PublicationRequestDTO publicationDTO, HttpServletRequest request) {
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
 
-        Publication publication = this.modelMapper.map(publicationRegistrationDTO, Publication.class);
-        publication.setAuthorId(user.getId());
-        publication.setIsAvailable(true);
-        publication.setLikes(new ArrayList<>());
+        Publication publication = new Publication(
+                publicationDTO.getDescription(),
+                publicationDTO.getLongitude(),
+                publicationDTO.getLatitude(),
+                user.getId(),
+                new ArrayList<AppUserLike>(),
+                new ArrayList<AppUserReport>(),
+                publicationDTO.getIsAuthorAnonymous(),
+                true,
+                false,
+                null,
+                false,
+                new Date()
+        );
 
         this.savePublication(publication);
         return publication;
@@ -89,15 +100,15 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
 
-        List<AppUserReaction> userLike = reactionList.stream().filter(
+        List<AppUserReaction> userReaction = reactionList.stream().filter(
                 l -> l.getAppUser().getId().equals(user.getId())
         ).collect(Collectors.toList());
 
-        if (userLike.isEmpty()) {
+        if (userReaction.isEmpty()) {
             reaction.setAppUser(user);
             reactionList.add(reaction);
         } else {
-            reactionList.remove(userLike.get(0));
+            reactionList.remove(userReaction.get(0));
         }
 
         if (isReportRelated){
@@ -137,6 +148,7 @@ public class PublicationServiceImpl implements PublicationService {
         if (user.getId().equals(publication.getAuthorId())) {
             publication.setIsResolved(true);
             publication.setIsAvailable(false);
+            publication.setIsResolvedDate(new Date());
             this.savePublication(publication);
         } else {
             throw new ApiRequestException(String.format(USER_IS_NOT_AUTHOR, user.getId()));
@@ -174,6 +186,16 @@ public class PublicationServiceImpl implements PublicationService {
     @Override
     public List<Publication> getAllPublicationsAvaliable() {
         return this.publicationRepository.findAllAvailable();
+    }
+
+    @Override
+    public List<Publication> getAllByYearAndMonthOrderedByLikes(int year, int month) {
+        return publicationRepository.findAllByYearAndMonthOrderedByLikes(year, month);
+    }
+
+    @Override
+    public List<Publication> getAllByIsResolvedYearAndMonth(int year, int month) {
+        return publicationRepository.findAllByIsResolvedYearAndMonth(year, month);
     }
 
 }
