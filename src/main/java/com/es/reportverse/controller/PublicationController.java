@@ -48,7 +48,7 @@ public class PublicationController {
         Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
         this.mediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.CREATED);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication), HttpStatus.CREATED);
     }
 
     @GetMapping("/mapa")
@@ -62,7 +62,7 @@ public class PublicationController {
 
         // TODO adicionar filtragem de visibilidade de publicação
         // Ou criar novo endpoint apenas para get de publicações disponíveis
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication), HttpStatus.OK);
     }
 
     @PutMapping("/curtir/{publicationId}")
@@ -71,7 +71,7 @@ public class PublicationController {
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserLike());
 
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
     }
 
     @PutMapping("/reportar/{publicationId}")
@@ -80,7 +80,7 @@ public class PublicationController {
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserReport());
 
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
     }
 
     @PutMapping("/comentar/{publicationId}")
@@ -89,11 +89,11 @@ public class PublicationController {
         BadWordsFilter.filterText(commentDTO.getText());
         Publication publication = this.publicationService.manipulatePublicationComments(publicationId, new AppUserComment(user,commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
 
     }
 
-    private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
+    private PublicationResponseDTO buildPublicationResponseDTO(Publication publication) {
 
         List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
         PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
@@ -102,11 +102,11 @@ public class PublicationController {
         return publicationResponseDTO;
     }
 
-    private List<PublicationResponseDTO> buildPublicationsListReponseDTO(Collection<Publication> collection) {
+    private List<PublicationResponseDTO> buildPublicationsListResponseDTO(Collection<Publication> collection) {
         List<PublicationResponseDTO> publicationsListResponseDTO = new ArrayList<>();
 
         for (Publication publication : collection) {
-            publicationsListResponseDTO.add(buildPublicationReponseDTO(publication));
+            publicationsListResponseDTO.add(buildPublicationResponseDTO(publication));
         }
 
         return publicationsListResponseDTO;
@@ -126,7 +126,7 @@ public class PublicationController {
   
     @GetMapping("/analise")
     public ResponseEntity<?> getPublicationsNeedReview() {
-        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationsListResponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
     }
 
     @DeleteMapping("/analisar/{publicationId}")
@@ -141,6 +141,6 @@ public class PublicationController {
 
     @GetMapping("/todas")
     public ResponseEntity<?> getAllPublicationsAvaliable() {
-        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.getAllPublicationsAvaliable()), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationsListResponseDTO(this.publicationService.getAllPublicationsAvaliable()), HttpStatus.OK);
     }
 }

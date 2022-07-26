@@ -27,4 +27,6 @@ public class PublicationResponseDTO {
 
     private List<ReportDTO> reports;
 
+    private List<CommentDTO> comments;
+
 }
