@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentDTO {
 
-    private AppUser appUser;
+    private UserDTO appUser;
 
     private String text;
 
