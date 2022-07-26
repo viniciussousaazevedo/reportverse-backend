@@ -128,6 +128,7 @@ public class PublicationServiceImpl implements PublicationService {
         }else{
             publication.getComments().remove(comment);
         }
+
         return this.savePublication(publication);
 
     }
