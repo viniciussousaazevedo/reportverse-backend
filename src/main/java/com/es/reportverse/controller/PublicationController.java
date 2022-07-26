@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/publicacao")
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin
 public class PublicationController {
 
     PublicationService publicationService;
