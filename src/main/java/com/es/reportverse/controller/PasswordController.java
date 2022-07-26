@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api/senha/")
 @AllArgsConstructor
-@CrossOrigin
 public class PasswordController {
 
     private final String SUCCESSFULLY_CHANGED_PASSWORD = "Senha alterada com sucesso.";
