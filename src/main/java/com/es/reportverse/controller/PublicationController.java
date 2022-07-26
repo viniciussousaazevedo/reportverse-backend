@@ -83,7 +83,7 @@ public class PublicationController {
         return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
     }
 
-    @PutMapping("/{publicationId}/comentario")
+    @PostMapping("/{publicationId}/comentario")
     public ResponseEntity<?> addPublicationComment(@PathVariable("publicationId") Long publicationId, @RequestBody CommentRequestDTO commentRequestDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         BadWordsFilter.filterText(commentRequestDTO.getText());
