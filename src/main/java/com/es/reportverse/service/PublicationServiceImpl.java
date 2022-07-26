@@ -50,6 +50,8 @@ public class PublicationServiceImpl implements PublicationService {
         publication.setAuthorId(user.getId());
         publication.setIsAvailable(true);
         publication.setLikes(new ArrayList<>());
+        publication.setReports(new ArrayList<>());
+        publication.setComments(new ArrayList<>());
 
         this.savePublication(publication);
         return publication;
@@ -126,7 +128,7 @@ public class PublicationServiceImpl implements PublicationService {
         }else{
             publication.getComments().remove(comment);
         }
-        return publication;
+        return this.savePublication(publication);
 
     }
 
