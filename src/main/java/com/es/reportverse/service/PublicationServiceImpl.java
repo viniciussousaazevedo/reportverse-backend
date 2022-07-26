@@ -121,16 +121,26 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication manipulatePublicationComments(Long publicationId, AppUserComment comment){
+    public Publication addPublicationComment(Long publicationId, AppUserComment comment){
         Publication publication = this.getPublication(publicationId);
-        if(!publication.getComments().contains(comment)){
-            publication.getComments().add(comment);
-        }else{
-            publication.getComments().remove(comment);
+        publication.getComments().add(comment);
+        return this.savePublication(publication);
+    }
+
+    @Override
+    public Publication deletePublicationComment(AppUser user, Long publicationId, Long commentId){
+        Publication publication = this.getPublication(publicationId);
+        List<AppUserComment> commentToRemoveList = publication.getComments()
+                                        .stream().filter(c -> c.getId().equals(commentId))
+                                        .collect(Collectors.toList());
+        if(commentToRemoveList.size() > 0){
+            AppUserComment commentToRemove = commentToRemoveList.get(0);
+            if(commentToRemove.getAppUser().equals(user)){
+                publication.getComments().remove(commentToRemove);
+            }
         }
 
         return this.savePublication(publication);
-
     }
 
     @Override

@@ -23,7 +23,9 @@ public interface PublicationService {
 
     Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction);
 
-    Publication manipulatePublicationComments(Long publicationId, AppUserComment comment);
+    Publication addPublicationComment(Long publicationId, AppUserComment comment);
+
+    Publication deletePublicationComment(AppUser user, Long publicationId, Long commentId);
 
     List<Publication> getPublicationsByAuthorId(AppUser user);
 
