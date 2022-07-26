@@ -119,7 +119,7 @@ public class PublicationServiceImpl implements PublicationService {
     }
 
     @Override
-    public Publication manipulatePublicationComments(AppUser user, Long publicationId, AppUserComment comment){
+    public Publication manipulatePublicationComments(Long publicationId, AppUserComment comment){
         Publication publication = this.getPublication(publicationId);
         if(!publication.getComments().contains(comment)){
             publication.getComments().add(comment);

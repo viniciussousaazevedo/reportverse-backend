@@ -23,7 +23,7 @@ public interface PublicationService {
 
     Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction);
 
-    Publication manipulatePublicationComments(AppUser user, Long publicationId, AppUserComment comment);
+    Publication manipulatePublicationComments(Long publicationId, AppUserComment comment);
 
     List<Publication> getPublicationsByAuthorId(AppUser user);
 

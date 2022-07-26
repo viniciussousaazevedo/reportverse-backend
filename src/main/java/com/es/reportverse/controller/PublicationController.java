@@ -87,7 +87,7 @@ public class PublicationController {
     public ResponseEntity<?> manipulatePublicationComments(@PathVariable("publicationId") Long publicationId, @RequestBody CommentDTO commentDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         BadWordsFilter.filterText(commentDTO.getText());
-        Publication publication = this.publicationService.manipulatePublicationComments(user, publicationId, new AppUserComment(user,commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
+        Publication publication = this.publicationService.manipulatePublicationComments(publicationId, new AppUserComment(user,commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
 
