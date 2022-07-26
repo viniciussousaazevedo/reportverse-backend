@@ -5,7 +5,7 @@ import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
 import com.es.reportverse.model.Media;
-import com.es.reportverse.model.appUserReaction.AppUserComment;
+import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
@@ -87,7 +87,7 @@ public class PublicationController {
     public ResponseEntity<?> manipulatePublicationComments(@PathVariable("publicationId") Long publicationId, @RequestBody CommentDTO commentDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         BadWordsFilter.filterText(commentDTO.getText());
-        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserComment(commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
+        Publication publication = this.publicationService.manipulatePublicationComments(user, publicationId, new AppUserComment(user,commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
 
         return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
 
