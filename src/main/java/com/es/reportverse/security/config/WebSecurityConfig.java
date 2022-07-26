@@ -16,11 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 @Configuration
 @AllArgsConstructor
@@ -39,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
 
         http.csrf().disable();
-        http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Esse comando serve para informar quais são as rotas livres (que podem ser acessadas sem token)
         http.authorizeRequests().antMatchers(
