@@ -25,7 +25,7 @@ public interface PublicationService {
 
     Publication addPublicationComment(Long publicationId, AppUserComment comment);
 
-    Publication deletePublicationComment(Long publicationId, Long commentId);
+    Publication deletePublicationComment(AppUser user, Long publicationId, Long commentId);
 
     List<Publication> getPublicationsByAuthorId(AppUser user);
 
