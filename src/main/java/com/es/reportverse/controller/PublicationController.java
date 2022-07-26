@@ -1,11 +1,11 @@
 package com.es.reportverse.controller;
 
-import com.es.reportverse.DTO.CommentDTO;
+import com.es.reportverse.DTO.CommentRequestDTO;
 import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
 import com.es.reportverse.model.Media;
-import com.es.reportverse.model.appUserReaction.AppUserComment;
+import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.service.PublicationService;
@@ -48,7 +48,7 @@ public class PublicationController {
         Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
         this.mediaService.registerMedias(publicationRequestDTO.getMediasPathList(), publication.getId());
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.CREATED);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication), HttpStatus.CREATED);
     }
 
     @GetMapping("/mapa")
@@ -62,38 +62,46 @@ public class PublicationController {
 
         // TODO adicionar filtragem de visibilidade de publicação
         // Ou criar novo endpoint apenas para get de publicações disponíveis
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication), HttpStatus.OK);
     }
 
-    @PutMapping("/curtir/{publicationId}")
+    @PutMapping("/{publicationId}/curtir")
     public ResponseEntity<?> manipulatePublicationLikes(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserLike());
 
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
     }
 
-    @PutMapping("/reportar/{publicationId}")
+    @PutMapping("/{publicationId}/reportar")
     public ResponseEntity<?> manipulatePublicationReports(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserReport());
 
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
     }
 
-    @PutMapping("/comentar/{publicationId}")
-    public ResponseEntity<?> manipulatePublicationComments(@PathVariable("publicationId") Long publicationId, @RequestBody CommentDTO commentDTO, HttpServletRequest request){
+    @PostMapping("/{publicationId}/comentario")
+    public ResponseEntity<?> addPublicationComment(@PathVariable("publicationId") Long publicationId, @RequestBody CommentRequestDTO commentRequestDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
-        BadWordsFilter.filterText(commentDTO.getText());
-        Publication publication = this.publicationService.manipulatePublicationReactions(user, publicationId, new AppUserComment(commentDTO.getText(),commentDTO.getIsAuthorAnonymous()));
+        BadWordsFilter.filterText(commentRequestDTO.getText());
+        Publication publication = this.publicationService.addPublicationComment(publicationId, new AppUserComment(user, commentRequestDTO.getText(), commentRequestDTO.getIsAuthorAnonymous()));
 
-        return new ResponseEntity<>(buildPublicationReponseDTO(publication) , HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
 
     }
 
-    private PublicationResponseDTO buildPublicationReponseDTO(Publication publication) {
+    @DeleteMapping("/{publicationId}/comentario/{commentId}")
+    public ResponseEntity<?> deletePublicationComment(@PathVariable("publicationId")Long publicationId, @PathVariable("commentId") Long commentId,HttpServletRequest request){
+        AppUser user = this.tokenManager.decodeAppUserToken(request);
+        Publication publication = this.publicationService.deletePublicationComment(user,publicationId,commentId);
+        return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
+
+    }
+
+    private PublicationResponseDTO buildPublicationResponseDTO(Publication publication) {
 
         List<Media> medias = this.mediaService.getMediasByPublicationId(publication.getId());
         PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
@@ -102,11 +110,11 @@ public class PublicationController {
         return publicationResponseDTO;
     }
 
-    private List<PublicationResponseDTO> buildPublicationsListReponseDTO(Collection<Publication> collection) {
+    private List<PublicationResponseDTO> buildPublicationsListResponseDTO(Collection<Publication> collection) {
         List<PublicationResponseDTO> publicationsListResponseDTO = new ArrayList<>();
 
         for (Publication publication : collection) {
-            publicationsListResponseDTO.add(buildPublicationReponseDTO(publication));
+            publicationsListResponseDTO.add(buildPublicationResponseDTO(publication));
         }
 
         return publicationsListResponseDTO;
@@ -118,7 +126,7 @@ public class PublicationController {
         return new ResponseEntity<>(this.publicationService.getPublicationsByAuthorId(user), HttpStatus.OK);
     }
 
-    @PutMapping("/resolverDenuncia/{publicationId}")
+    @PutMapping("/{publicationId}/resolverDenuncia")
     public ResponseEntity<?> resolvePublication(@PathVariable("publicationId") Long publicationId, HttpServletRequest request) {
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         return new ResponseEntity<>(this.publicationService.resolvePublication(publicationId, user), HttpStatus.OK);
@@ -126,21 +134,21 @@ public class PublicationController {
   
     @GetMapping("/analise")
     public ResponseEntity<?> getPublicationsNeedReview() {
-        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationsListResponseDTO(this.publicationService.findAllByNeedsReview(true)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/analisar/{publicationId}")
+    @DeleteMapping("/{publicationId}/analisar")
     public ResponseEntity<?> invalidatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.invalidatePublication(publicationId), HttpStatus.OK);
     }
 
-    @PutMapping("/analisar/{publicationId}")
+    @PutMapping("/{publicationId}/analisar")
     public ResponseEntity<?> validatePublication(@PathVariable("publicationId") Long publicationId) {
         return new ResponseEntity<>(this.publicationService.validatePublication(publicationId), HttpStatus.OK);
     }
 
     @GetMapping("/todas")
     public ResponseEntity<?> getAllPublicationsAvaliable() {
-        return new ResponseEntity<>(buildPublicationsListReponseDTO(this.publicationService.getAllPublicationsAvaliable()), HttpStatus.OK);
+        return new ResponseEntity<>(buildPublicationsListResponseDTO(this.publicationService.getAllPublicationsAvaliable()), HttpStatus.OK);
     }
 }

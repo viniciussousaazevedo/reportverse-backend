@@ -5,10 +5,10 @@ import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
-import com.es.reportverse.model.appUserReaction.AppUserReport;
 import com.es.reportverse.repository.PublicationRepository;
 import com.es.reportverse.utils.BadWordsFilter;
 import lombok.AllArgsConstructor;
@@ -50,6 +50,8 @@ public class PublicationServiceImpl implements PublicationService {
         publication.setAuthorId(user.getId());
         publication.setIsAvailable(true);
         publication.setLikes(new ArrayList<>());
+        publication.setReports(new ArrayList<>());
+        publication.setComments(new ArrayList<>());
 
         this.savePublication(publication);
         return publication;
@@ -87,13 +89,10 @@ public class PublicationServiceImpl implements PublicationService {
 
         if (reaction instanceof AppUserLike) {
             reactionList = (List) publication.getLikes();
-        } else if (reaction instanceof AppUserReport){
+        } else {
             reactionList = (List) publication.getReports();
             isReportRelated = true;
-        } else {
-            reactionList = (List) publication.getComments();
         }
-
 
         List<AppUserReaction> userLike = reactionList.stream().filter(
                 l -> l.getAppUser().getId().equals(user.getId())
@@ -115,6 +114,29 @@ public class PublicationServiceImpl implements PublicationService {
             } else if(publication.getNeedsReview()){
                     publication.setNeedsReview(false);
                     publication.setIsAvailable(true);
+            }
+        }
+
+        return this.savePublication(publication);
+    }
+
+    @Override
+    public Publication addPublicationComment(Long publicationId, AppUserComment comment){
+        Publication publication = this.getPublication(publicationId);
+        publication.getComments().add(comment);
+        return this.savePublication(publication);
+    }
+
+    @Override
+    public Publication deletePublicationComment(AppUser user, Long publicationId, Long commentId){
+        Publication publication = this.getPublication(publicationId);
+        List<AppUserComment> commentToRemoveList = publication.getComments()
+                                        .stream().filter(c -> c.getId().equals(commentId))
+                                        .collect(Collectors.toList());
+        if(commentToRemoveList.size() > 0){
+            AppUserComment commentToRemove = commentToRemoveList.get(0);
+            if(commentToRemove.getAppUser().equals(user)){
+                publication.getComments().remove(commentToRemove);
             }
         }
 

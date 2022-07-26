@@ -3,6 +3,7 @@ package com.es.reportverse.service;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationLocationDTO;
 import com.es.reportverse.model.AppUser;
+import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.appUserReaction.AppUserReaction;
 
@@ -21,6 +22,10 @@ public interface PublicationService {
     List<PublicationLocationDTO> getPublicationsLocations();
 
     Publication manipulatePublicationReactions(AppUser user, Long publicationId, AppUserReaction reaction);
+
+    Publication addPublicationComment(Long publicationId, AppUserComment comment);
+
+    Publication deletePublicationComment(AppUser user, Long publicationId, Long commentId);
 
     List<Publication> getPublicationsByAuthorId(AppUser user);
 
