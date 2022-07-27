@@ -59,9 +59,6 @@ public class PublicationController {
     @GetMapping("/{publicationId}")
     public ResponseEntity<?> getPublication(@PathVariable("publicationId") Long publicationId) {
         Publication publication = this.publicationService.getPublication(publicationId);
-
-        // TODO adicionar filtragem de visibilidade de publicação
-        // Ou criar novo endpoint apenas para get de publicações disponíveis
         return new ResponseEntity<>(buildPublicationResponseDTO(publication), HttpStatus.OK);
     }
 
