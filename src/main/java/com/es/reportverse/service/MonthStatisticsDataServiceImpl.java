@@ -4,8 +4,15 @@ import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.media.MonthStatisticsData;
 import com.es.reportverse.repository.MonthStatisticsDataRepository;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
@@ -69,7 +76,25 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
     }
 
     private String createPDF(String content) throws Exception {
-        return null; // TODO
+        String encodedMedia = null;
+        String fileName = "file.pdf";
+        Path path = Paths.get(fileName);
+        try {
+            Document document = new Document();
+
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+            Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+            document.add(new Paragraph(content, font));
+            document.close();
+            encodedMedia = this.mediaService.encodeMedia(Files.readAllBytes(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Files.delete(path);
+        }
+
+        return encodedMedia;
     }
 
     private Calendar getLastMonthCalendar(int year, int month) {
