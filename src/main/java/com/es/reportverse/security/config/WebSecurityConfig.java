@@ -4,7 +4,6 @@ import com.es.reportverse.security.filter.CustomAuthenticationFilter;
 import com.es.reportverse.security.filter.CustomAuthorizationFilter;
 import com.es.reportverse.service.AppUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -2,6 +2,7 @@ package com.es.reportverse.DTO;
 
 import lombok.*;
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
