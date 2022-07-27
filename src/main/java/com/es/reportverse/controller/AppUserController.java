@@ -52,6 +52,8 @@ public class AppUserController {
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // TODO ajeitar tempo de expiração de código para 30 minutos!
+
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         // TODO refatorar código utilizando o TokenManager
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -65,7 +67,7 @@ public class AppUserController {
 
                 String access_token = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 20000 * 60 * 1000))
                         .withIssuer(request.getRequestURI().toString())
                         .withClaim("userRole", user.getUserRole().toString())
                         .sign(algorithm);

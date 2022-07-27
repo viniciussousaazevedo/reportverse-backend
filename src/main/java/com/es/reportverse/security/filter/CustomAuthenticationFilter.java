@@ -27,7 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @AllArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final long MINUTES_FOR_TOKEN_EXPIRED = 30;
+    private final long MINUTES_FOR_TOKEN_EXPIRED = 20000;
 
     private AuthenticationManager authenticationManager;
 
