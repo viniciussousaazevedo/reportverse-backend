@@ -2,9 +2,6 @@ package com.es.reportverse.service;
 
 
 import com.es.reportverse.model.media.MonthStatisticsData;
-import com.itextpdf.text.DocumentException;
-
-import java.io.FileNotFoundException;
 
 public interface MonthStatisticsDataService {
 

@@ -4,15 +4,8 @@ import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.Publication;
 import com.es.reportverse.model.media.MonthStatisticsData;
 import com.es.reportverse.repository.MonthStatisticsDataRepository;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
