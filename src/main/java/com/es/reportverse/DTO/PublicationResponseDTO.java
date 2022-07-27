@@ -30,4 +30,6 @@ public class PublicationResponseDTO {
 
     private Date creationDate;
 
+    private List<CommentDTO> comments;
+
 }
