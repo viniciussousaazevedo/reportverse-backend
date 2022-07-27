@@ -5,7 +5,6 @@ import com.es.reportverse.DTO.MediaDTO;
 import com.es.reportverse.DTO.PublicationRequestDTO;
 import com.es.reportverse.DTO.PublicationResponseDTO;
 import com.es.reportverse.model.media.PublicationMedia;
-import com.es.reportverse.model.Media;
 import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;

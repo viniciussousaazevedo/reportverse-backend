@@ -44,7 +44,7 @@ public class PublicationServiceImpl implements PublicationService {
     public Publication registerPublication(PublicationRequestDTO publicationDTO, HttpServletRequest request) {
 
         // verifica se a descrição da publicação tem alguma palavra imprópria
-        BadWordsFilter.filterText(publicationRegistrationDTO.getDescription());
+        BadWordsFilter.filterText(publicationDTO.getDescription());
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
 
