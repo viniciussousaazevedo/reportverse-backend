@@ -1,4 +1,4 @@
-package com.es.reportverse.model;
+package com.es.reportverse.model.media;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +11,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-public class Media extends GenericModel{
-
-    @Column(columnDefinition = "text")
-    private String code;
+public class PublicationMedia extends Media {
 
     private Long publicationId;
+
+    public PublicationMedia(String codeMedia, Long publicationId) {
+        super(codeMedia);
+        this.publicationId = publicationId;
+    }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -23,9 +24,11 @@ public class PublicationResponseDTO {
 
     private List<LikeDTO> likes;
 
+    private List<ReportDTO> reports;
+
     private List<MediaDTO> medias;
 
-    private List<ReportDTO> reports;
+    private Date creationDate;
 
     private List<CommentDTO> comments;
 

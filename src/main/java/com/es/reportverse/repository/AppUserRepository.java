@@ -3,11 +3,13 @@ package com.es.reportverse.repository;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,6 +22,10 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Collection<AppUser> findAllByUserRole(UserRole userRole);
 
-    Optional<AppUser> findById(Long id);
+    @Query(value = "SELECT * FROM app_user WHERE " +
+            "EXTRACT(YEAR FROM creation_date) = ?1 AND " +
+            "EXTRACT(MONTH FROM creation_date) = ?2",
+            nativeQuery = true)
+    List<AppUser> findAllByYearAndMonth(int year, int month);
 
 }

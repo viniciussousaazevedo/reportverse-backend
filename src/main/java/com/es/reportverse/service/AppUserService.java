@@ -6,6 +6,7 @@ import com.es.reportverse.model.AppUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface AppUserService extends UserDetailsService {
 
@@ -22,5 +23,7 @@ public interface AppUserService extends UserDetailsService {
     void checkPasswordConfirmation(String password, String passwordConfirmation);
 
     Collection<AppUser> findAllByUserRole(UserRole userRole);
+
+    List<AppUser> getUsersByYearAndMonth(int year, int month);
 
 }

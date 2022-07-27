@@ -38,6 +38,8 @@ public class AppUser extends GenericModel implements UserDetails {
 
     private Date recoveryPasswordTokenExpiration;
 
+    private Date creationDate;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());

@@ -3,17 +3,20 @@ package com.es.reportverse.model;
 import com.es.reportverse.model.AppUserComment;
 import com.es.reportverse.model.appUserReaction.AppUserLike;
 import com.es.reportverse.model.appUserReaction.AppUserReport;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Publication extends GenericModel {
 
@@ -31,15 +34,19 @@ public class Publication extends GenericModel {
     @OneToMany(cascade = CascadeType.ALL)
     private List<AppUserReport> reports;
 
+    private Boolean isAuthorAnonymous;
+    
     @OneToMany(cascade = CascadeType.ALL)
     private List<AppUserComment> comments;
 
-    private Boolean isAuthorAnonymous = false;
+    private Boolean isAvailable;
 
-    private Boolean isAvailable = true;
+    private Boolean isResolved;
 
-    private Boolean isResolved = false;
+    private Date isResolvedDate;
 
-    private Boolean needsReview = false;
+    private Boolean needsReview;
+
+    private Date creationDate;
 
 }

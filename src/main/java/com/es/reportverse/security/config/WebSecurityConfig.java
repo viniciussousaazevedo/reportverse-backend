@@ -1,6 +1,5 @@
 package com.es.reportverse.security.config;
 
-import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.security.filter.CustomAuthenticationFilter;
 import com.es.reportverse.security.filter.CustomAuthorizationFilter;
 import com.es.reportverse.service.AppUserService;
