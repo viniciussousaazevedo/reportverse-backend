@@ -20,12 +20,12 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
 
     private MediaService mediaService;
 
-    public void registerMedias(List<String> mediasPathList, Long publicationId) {
+    public void registerMedias(List<byte[]> mediasBytesList, Long publicationId) {
         try {
 
-            for (String mediaPath : mediasPathList) {
+            for (byte[] mediaBytes : mediasBytesList) {
 
-                String codeMedia = this.encodeMedia(mediaPath);
+                String codeMedia = this.encodeMedia(mediaBytes);
 
                 PublicationMedia publicationMedia = new PublicationMedia(codeMedia, publicationId);
                 this.saveMedia(publicationMedia);
@@ -44,12 +44,9 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
         return publicationMediaRepository.findByPublicationId(publicationId);
     }
 
-    private String encodeMedia(String mediaPath) throws Exception {
+    private String encodeMedia(byte[] mediaBytes) throws Exception {
 
-        FileInputStream mediaStream = new FileInputStream(mediaPath);
-        String codedMedia = mediaService.encodeMedia(mediaStream.readAllBytes());
-        mediaStream.close();
-        return codedMedia;
+        return mediaService.encodeMedia(mediaBytes);
     }
 
 }

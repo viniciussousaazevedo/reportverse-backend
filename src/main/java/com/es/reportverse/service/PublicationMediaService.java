@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface PublicationMediaService {
 
-    void registerMedias(List<String> mediasPathList, Long publicationId);
+    void registerMedias(List<byte[]> mediasBytesList, Long publicationId);
 
     void saveMedia(PublicationMedia publicationMedia);
 

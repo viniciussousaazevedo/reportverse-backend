@@ -18,6 +18,6 @@ public class PublicationRequestDTO {
 
     private Boolean isAuthorAnonymous;
 
-    private List<String> mediasPathList;
+    private List<byte[]> mediasBytesList;
 
 }
