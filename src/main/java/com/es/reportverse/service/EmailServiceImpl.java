@@ -69,8 +69,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+
     @Override
-    public String notifyExcludedPublicationAuthor(String authorUsername, Publication publication) {
+    public String notifyExcludedPublicationAuthor(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
 
         this.sendMail(
                 authorUsername,
@@ -78,24 +81,39 @@ public class EmailServiceImpl implements EmailService {
                 "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
                         "Após um período de análise, foi decidido que sua publicação não condiz com as diretrizes da plataforma, por isso foi excluída. " +
                         "Solicitamos maior cuidado no conteúdo a ser postado em próximas publicações." +
-                        "\nConteúdo da publicação: \n" + publication.getDescription()
+                        "\n\nConteúdo da publicação: \n" + publication.getDescription()
         );
 
         return EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED;
     }
 
     @Override
-    public String notifyAvailablePublicationAuthor(String authorUsername, Publication publication) {
+    public String notifyAvailablePublicationAuthor(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
 
         this.sendMail(
             authorUsername,
             "Uma publicação sua voltou ao ar no Reportverse",
             "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
                     "Após um período de análise, foi decidido que sua publicação pode continuar na plataforma. " +
-                    "\nConteúdo da publicação: \n" + publication.getDescription()
+                    "\n\nConteúdo da publicação: \n" + publication.getDescription()
         );
 
         return AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED;
+    }
+
+    @Override
+    public void notifyAuthorReportedPublication(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
+
+        this.sendMail(
+                authorUsername,
+                "Uma publicação sua foi suspensa do Reportverse",
+                "Recentemente, você criou uma publicação que foi reportada por usuários como imprópria para " +
+                        "permanência no Reportverse. Agora, nossos usuários administradores irão avaliar a integridade do conteúdo." +
+                        " Solicitamos maior cuidado no conteúdo a ser postado em próximas publicações." +
+                        "\n\nConteúdo da publicação: \n" + publication.getDescription()
+        );
     }
 
 
