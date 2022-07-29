@@ -26,6 +26,7 @@ import com.es.reportverse.utils.BadWordsFilter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -84,7 +85,7 @@ public class PublicationController {
     public ResponseEntity<?> addPublicationComment(@PathVariable("publicationId") Long publicationId, @RequestBody CommentRequestDTO commentRequestDTO, HttpServletRequest request){
         AppUser user = this.tokenManager.decodeAppUserToken(request);
         BadWordsFilter.filterText(commentRequestDTO.getText());
-        Publication publication = this.publicationService.addPublicationComment(publicationId, new AppUserComment(user, commentRequestDTO.getText(), commentRequestDTO.getIsAuthorAnonymous()));
+        Publication publication = this.publicationService.addPublicationComment(publicationId, new AppUserComment(user, commentRequestDTO.getText(), commentRequestDTO.getIsAuthorAnonymous(),new Date()));
 
         return new ResponseEntity<>(buildPublicationResponseDTO(publication) , HttpStatus.OK);
 
