@@ -157,7 +157,7 @@ public class PublicationServiceImpl implements PublicationService {
 
         List<Publication> publicationsList = new ArrayList<>();
 
-        if (user.getUserRole() == UserRole.ADMINISTRADOR) {
+        if (user.getUserRole() == UserRole.ADMINISTRADOR) { // FIXME e se o adm quiser ver suas publicações?
             publicationsList = publicationRepository.findAll();
         } else if (user.getUserRole() == UserRole.UNIVERSITARIO) {
             publicationsList = publicationRepository.findByAuthorId(user.getId());

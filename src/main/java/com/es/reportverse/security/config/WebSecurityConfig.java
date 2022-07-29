@@ -1,5 +1,6 @@
 package com.es.reportverse.security.config;
 
+import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.security.filter.CustomAuthenticationFilter;
 import com.es.reportverse.security.filter.CustomAuthorizationFilter;
 import com.es.reportverse.service.AppUserService;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static com.es.reportverse.security.config.TokenConstants.*;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @AllArgsConstructor
@@ -50,7 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(noTokenEndpoints.toArray(new String[0])).permitAll();
 
-        // http.authorizeRequests().antMatchers(GET, "/api/usuarios/**").hasAnyAuthority(UserRole.UNIVERSITARIO.name());
+        http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
+        http.authorizeRequests().antMatchers(DELETE, "/api/publicacao/**/analisar" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
+        http.authorizeRequests().antMatchers(PUT, "/api/publicacao/**/analisar" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
+        http.authorizeRequests().antMatchers(GET, "/api/estatisticas/download" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
 
         http.authorizeRequests().anyRequest().authenticated();
 
