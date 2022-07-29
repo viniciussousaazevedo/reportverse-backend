@@ -7,19 +7,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import static com.es.reportverse.security.config.TokenConstants.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -29,18 +26,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TokenManagerServiceImpl implements TokenManagerService {
 
     private final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
-    private final String BEARER = "Bearer ";
-    private final String SECRET_WORD_FOR_TOKEN_GENERATION;
-    public final int MINUTES_FOR_TOKEN_EXPIRATION = 20000;
 
     AppUserService appUserService;
-
-    public TokenManagerServiceImpl(AppUserService appUserService) {
-        this.appUserService = appUserService;
-
-        Dotenv dotenv = Dotenv.configure().load();
-        this.SECRET_WORD_FOR_TOKEN_GENERATION = dotenv.get("SECRET_WORD_FOR_TOKEN_GENERATION");
-    }
 
 
     @Override
@@ -65,7 +52,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
     @Override
     public String createAppUserToken(HttpServletRequest request, Authentication authentication) {
         AppUser appUser = (AppUser) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
         return JWT.create()
                 .withSubject(appUser.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + MINUTES_FOR_TOKEN_EXPIRATION * 60 * 1000))

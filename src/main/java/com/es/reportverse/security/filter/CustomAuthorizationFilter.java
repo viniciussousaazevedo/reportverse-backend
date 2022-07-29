@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.service.TokenManagerService;
+import com.es.reportverse.service.TokenManagerServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,19 +21,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static com.es.reportverse.security.config.TokenConstants.*;
 
 @AllArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     private TokenManagerService tokenManagerService;
-
-    public static final String[] NO_TOKEN_ENDPOINTS = {
-            "/api/login",
-            "/api/usuario/cadastro",
-            "/api/usuario/token/refresh",
-            "/api/senha/esqueci-senha",
-            "/api/senha/trocar-senha",
-    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,10 +35,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    String token = authorizationHeader.substring(BEARER.length());
+                    Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();

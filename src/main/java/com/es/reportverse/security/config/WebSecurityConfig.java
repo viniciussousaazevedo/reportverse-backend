@@ -19,25 +19,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static com.es.reportverse.security.config.TokenConstants.*;
 
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private static final String[] SWAGGER_ENDPOINTS = {
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/swagger-ui/**",
-            "/v2/api-docs",
-            "/webjars/**"
-    };
-
-    private final String PERMIT_ALL_AFTER = "/**";
 
     private AppUserService userService;
 
@@ -53,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        List<String> noTokenEndpoints = new ArrayList<>(Arrays.asList(CustomAuthorizationFilter.NO_TOKEN_ENDPOINTS));
+        List<String> noTokenEndpoints = new ArrayList<>(Arrays.asList(NO_TOKEN_ENDPOINTS));
         noTokenEndpoints.forEach(
                 endpoint -> endpoint += PERMIT_ALL_AFTER
         );
