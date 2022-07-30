@@ -45,7 +45,7 @@ public class PublicationController {
     ModelMapper modelMapper;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<?> registerPublication(@RequestBody PublicationRequestDTO publicationRequestDTO, HttpServletRequest request) {
+    public ResponseEntity<?> registerPublication(@ModelAttribute PublicationRequestDTO publicationRequestDTO, HttpServletRequest request) {
         Publication publication = this.publicationService.registerPublication(publicationRequestDTO, request);
         this.publicationMediaService.registerMedias(publicationRequestDTO.getMediasBytesList(), publication.getId());
 
