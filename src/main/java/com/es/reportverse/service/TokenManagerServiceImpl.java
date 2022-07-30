@@ -71,6 +71,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
                 return decodeToken(token, algorithm);
 
             } catch (Exception e) {
+                System.out.println("Caiu aqui");
                 throw new ApiRequestException(e.getMessage());
             }
         } else {
