@@ -33,8 +33,15 @@ public class TokenManagerServiceImpl implements TokenManagerService {
     @Override
     public AppUser decodeToken(String token, Algorithm algorithm) {
         JWTVerifier verifier = JWT.require(algorithm).build();
+        System.out.println("passou build");
+        System.out.println(verifier);
         DecodedJWT decodedJWT = verifier.verify(token);
+        System.out.println("passou verify");
+        System.out.println(decodedJWT);
         String username = decodedJWT.getSubject();
+        System.out.println("passou getSubject");
+        System.out.println(appUserService);
+
 
         return appUserService.getUser(username);
     }
