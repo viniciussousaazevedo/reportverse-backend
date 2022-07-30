@@ -32,4 +32,14 @@ public class PublicationResponseDTO {
 
     private List<CommentDTO> comments;
 
+    private Boolean isAvailable;
+
+    private Boolean isResolved;
+
+    private Date isResolvedDate;
+
+    private Boolean needsReview;
+
+    private Boolean isAuthorAnonymous;
+
 }
