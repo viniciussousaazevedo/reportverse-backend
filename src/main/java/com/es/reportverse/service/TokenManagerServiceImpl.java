@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,11 +25,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 @Getter
+@AllArgsConstructor
 public class TokenManagerServiceImpl implements TokenManagerService {
 
     private final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
-    @Autowired
     AppUserService appUserService;
 
 

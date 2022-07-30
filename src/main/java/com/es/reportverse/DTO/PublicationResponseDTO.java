@@ -20,7 +20,7 @@ public class PublicationResponseDTO {
 
     private String latitude;
 
-    private Long authorId;
+    private String authorName;
 
     private List<LikeDTO> likes;
 

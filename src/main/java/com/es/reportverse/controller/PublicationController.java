@@ -103,6 +103,14 @@ public class PublicationController {
 
         List<PublicationMedia> publicationMedia = this.publicationMediaService.getMediasByPublicationId(publication.getId());
         PublicationResponseDTO publicationResponseDTO = this.modelMapper.map(publication, PublicationResponseDTO.class);
+
+        publicationResponseDTO.setAuthorName(
+                publication.getIsAuthorAnonymous() ?
+                    null :
+                    appUserService.getUser(publication.getAuthorId()).getName()
+        );
+
+
         publicationResponseDTO.setMedias(modelMapper.map(publicationMedia, new TypeToken<List<MediaDTO>>() {}.getType()));
 
         return publicationResponseDTO;
