@@ -3,7 +3,7 @@ package com.es.reportverse.service;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
-import io.github.cdimascio.dotenv.Dotenv;
+import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
+@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
@@ -19,19 +20,11 @@ public class EmailServiceImpl implements EmailService {
 
     final String AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação voltou ao ar na plataforma";
 
-    final String PASSWORD_RECOVERY_DOMAIN;
+    final String PASSWORD_RECOVERY_DOMAIN = System.getenv("PASSWORD_RECOVERY_LINK");
 
     private final JavaMailSender emailSender;
 
     private final AppUserService appUserService;
-
-    public EmailServiceImpl(JavaMailSender emailSender, AppUserService appUserService) {
-        this.emailSender = emailSender;
-        this.appUserService = appUserService;
-
-        Dotenv dotenv = Dotenv.configure().load();
-        PASSWORD_RECOVERY_DOMAIN = dotenv.get("PASSWORD_RECOVERY_LINK");
-    }
 
     private void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();

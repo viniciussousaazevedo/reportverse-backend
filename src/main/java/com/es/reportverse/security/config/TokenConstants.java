@@ -1,6 +1,5 @@
 package com.es.reportverse.security.config;
 
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class TokenConstants {
 
@@ -14,7 +13,7 @@ public class TokenConstants {
 
     public static final String BEARER = "Bearer ";
 
-    public static String SECRET_WORD_FOR_TOKEN_GENERATION = Dotenv.configure().load().get("SECRET_WORD_FOR_TOKEN_GENERATION");
+    public static String SECRET_WORD_FOR_TOKEN_GENERATION = System.getenv("SECRET_WORD_FOR_TOKEN_GENERATION");
 
     public static final int MINUTES_FOR_TOKEN_EXPIRATION = 20000;
 
