@@ -66,8 +66,14 @@ public class TokenManagerServiceImpl implements TokenManagerService {
 
         if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
             try {
+                System.out.println("tentando pegar bytes");
+                System.out.println(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
+                System.out.println("algo : ");
+                System.out.println(algorithm);
                 String token = authorizationHeader.substring(BEARER.length());
+                System.out.println("token");
+                System.out.println(token);
                 return decodeToken(token, algorithm);
 
             } catch (Exception e) {
