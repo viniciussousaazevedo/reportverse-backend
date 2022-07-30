@@ -3,7 +3,7 @@ package com.es.reportverse.service;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.model.Publication;
-import lombok.AllArgsConstructor;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-@AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
@@ -20,9 +19,19 @@ public class EmailServiceImpl implements EmailService {
 
     final String AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação voltou ao ar na plataforma";
 
-    private JavaMailSender emailSender;
+    final String PASSWORD_RECOVERY_DOMAIN;
 
-    private AppUserService appUserService;
+    private final JavaMailSender emailSender;
+
+    private final AppUserService appUserService;
+
+    public EmailServiceImpl(JavaMailSender emailSender, AppUserService appUserService) {
+        this.emailSender = emailSender;
+        this.appUserService = appUserService;
+
+        Dotenv dotenv = Dotenv.configure().load();
+        PASSWORD_RECOVERY_DOMAIN = dotenv.get("PASSWORD_RECOVERY_LINK");
+    }
 
     private void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -41,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
         this.sendMail(
                 to,
                 "Link para recuperação de senha",
-                "Este é o link para recuperação de sua senha:  " + recoveryLink
+                "Este é o link para recuperação de sua senha:  " + PASSWORD_RECOVERY_DOMAIN + recoveryLink
         );
 
         return PASSWORD_RECOVERY_EMAIL_SENT;
@@ -60,8 +69,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+
+
     @Override
-    public String notifyExcludedPublicationAuthor(String authorUsername, Publication publication) {
+    public String notifyExcludedPublicationAuthor(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
 
         this.sendMail(
                 authorUsername,
@@ -69,24 +81,39 @@ public class EmailServiceImpl implements EmailService {
                 "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
                         "Após um período de análise, foi decidido que sua publicação não condiz com as diretrizes da plataforma, por isso foi excluída. " +
                         "Solicitamos maior cuidado no conteúdo a ser postado em próximas publicações." +
-                        "\nConteúdo da publicação: \n" + publication.getDescription()
+                        "\n\nConteúdo da publicação: \n" + publication.getDescription()
         );
 
         return EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED;
     }
 
     @Override
-    public String notifyAvailablePublicationAuthor(String authorUsername, Publication publication) {
+    public String notifyAvailablePublicationAuthor(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
 
         this.sendMail(
             authorUsername,
             "Uma publicação sua voltou ao ar no Reportverse",
             "Recentemente, você criou uma publicação que havia sido reportada para administradores por usuários. " +
                     "Após um período de análise, foi decidido que sua publicação pode continuar na plataforma. " +
-                    "\nConteúdo da publicação: \n" + publication.getDescription()
+                    "\n\nConteúdo da publicação: \n" + publication.getDescription()
         );
 
         return AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED;
+    }
+
+    @Override
+    public void notifyAuthorReportedPublication(Publication publication) {
+        String authorUsername = appUserService.getUser(publication.getAuthorId()).getUsername();
+
+        this.sendMail(
+                authorUsername,
+                "Uma publicação sua foi suspensa do Reportverse",
+                "Recentemente, você criou uma publicação que foi reportada por usuários como imprópria para " +
+                        "permanência no Reportverse. Agora, nossos usuários administradores irão avaliar a integridade do conteúdo." +
+                        " Solicitamos maior cuidado no conteúdo a ser postado em próximas publicações." +
+                        "\n\nConteúdo da publicação: \n" + publication.getDescription()
+        );
     }
 
 

@@ -28,9 +28,9 @@ public class PasswordController {
     @PostMapping("/esqueci-senha")
     public ResponseEntity<?> triggerPasswordRecovery(@RequestBody String username) {
 
-        String link = passwordService.getPasswordRecoveryLink(username);
+        String userEndpoint = passwordService.getPasswordRecoveryLink(username);
 
-        String message = emailService.sendPasswordRecoveryByEmail(username,link);
+        String message = emailService.sendPasswordRecoveryByEmail(username,userEndpoint);
         return new ResponseEntity<>(message,HttpStatus.OK);
     }
 

@@ -27,8 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class PublicationServiceImpl implements PublicationService {
 
-    private final static String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
-    private final static String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
+    private final String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
+    private final String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
+    private final int QTT_REPORTS_TO_INVALIDADE_PUB = 5;
 
     private PublicationRepository publicationRepository;
 
@@ -38,12 +39,9 @@ public class PublicationServiceImpl implements PublicationService {
 
     private EmailService emailService;
 
-    private AppUserService appUserService;
-
     @Override
     public Publication registerPublication(PublicationRequestDTO publicationDTO, HttpServletRequest request) {
 
-        // verifica se a descrição da publicação tem alguma palavra imprópria
         BadWordsFilter.filterText(publicationDTO.getDescription());
 
         AppUser user = tokenDecoder.decodeAppUserToken(request);
@@ -117,11 +115,11 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         if (isReportRelated){
-            if(reactionList.size() >= 5 && !publication.getNeedsReview()){
+            if(reactionList.size() >= QTT_REPORTS_TO_INVALIDADE_PUB && !publication.getNeedsReview()){
                 publication.setNeedsReview(true);
                 publication.setIsAvailable(false);
                 this.emailService.notifyAdminsReportedPublication(publication);
-                // TODO o dono da publicação não deveria ser notificado também? Levar essa ideia adiante junto do front.
+                this.emailService.notifyAuthorReportedPublication(publication);
             } else if(publication.getNeedsReview()){
                     publication.setNeedsReview(false);
                     publication.setIsAvailable(true);
@@ -159,7 +157,7 @@ public class PublicationServiceImpl implements PublicationService {
 
         List<Publication> publicationsList = new ArrayList<>();
 
-        if (user.getUserRole() == UserRole.ADMINISTRADOR) {
+        if (user.getUserRole() == UserRole.ADMINISTRADOR) { // FIXME e se o adm quiser ver suas publicações?
             publicationsList = publicationRepository.findAll();
         } else if (user.getUserRole() == UserRole.UNIVERSITARIO) {
             publicationsList = publicationRepository.findByAuthorId(user.getId());
@@ -195,8 +193,7 @@ public class PublicationServiceImpl implements PublicationService {
         Publication publication = this.getPublication(publicationId);
         this.publicationRepository.delete(publication);
 
-        String authorUsername = this.appUserService.getUser(publication.getAuthorId()).getUsername();
-        return this.emailService.notifyExcludedPublicationAuthor(authorUsername, publication);
+        return this.emailService.notifyExcludedPublicationAuthor(publication);
     }
 
     @Override
@@ -207,8 +204,7 @@ public class PublicationServiceImpl implements PublicationService {
        publication.getReports().clear();
 
        this.savePublication(publication);
-       String authorUsername = this.appUserService.getUser(publication.getAuthorId()).getUsername();
-        return this.emailService.notifyAvailablePublicationAuthor(authorUsername, publication);
+        return this.emailService.notifyAvailablePublicationAuthor(publication);
     }
 
     @Override

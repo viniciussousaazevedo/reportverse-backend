@@ -8,7 +8,9 @@ public interface EmailService {
 
     void notifyAdminsReportedPublication(Publication publication);
 
-    String notifyExcludedPublicationAuthor(String authorUsername, Publication publication);
+    String notifyExcludedPublicationAuthor(Publication publication);
 
-    String notifyAvailablePublicationAuthor(String authorUsername, Publication publication);
+    String notifyAvailablePublicationAuthor(Publication publication);
+
+    void notifyAuthorReportedPublication(Publication publication);
 }
