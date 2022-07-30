@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.es.reportverse.repository.PublicationMediaRepository;
 
-import java.io.FileInputStream;
 import java.util.List;
 
 @Service

@@ -101,13 +101,12 @@ public class BadWordsFilter {
 
     }
 
-    public static String filterText(String input) {
+    public static void filterText(String input) {
         BadWordsFilter.loadConfigs();
         ArrayList<String> badWords = badWordsFound(input);
         if(badWords.size() > 0) {
             throw new ApiRequestException(String.format(BAD_WORD_FOUNDED));
         }
-        return input;
     }
 }
 
