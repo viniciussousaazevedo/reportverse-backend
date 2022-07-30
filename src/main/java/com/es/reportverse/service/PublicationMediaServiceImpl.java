@@ -4,6 +4,7 @@ import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.media.PublicationMedia;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.es.reportverse.repository.PublicationMediaRepository;
 
@@ -19,12 +20,12 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
 
     private MediaService mediaService;
 
-    public void registerMedias(List<byte[]> mediasBytesList, Long publicationId) {
+    public void registerMedias(List<MultipartFile> mediasList, Long publicationId) {
         try {
 
-            for (byte[] mediaBytes : mediasBytesList) {
+            for (MultipartFile media : mediasList) {
 
-                String codeMedia = this.encodeMedia(mediaBytes);
+                String codeMedia = this.encodeMedia(media);
 
                 PublicationMedia publicationMedia = new PublicationMedia(codeMedia, publicationId);
                 this.saveMedia(publicationMedia);
@@ -43,9 +44,9 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
         return publicationMediaRepository.findByPublicationId(publicationId);
     }
 
-    private String encodeMedia(byte[] mediaBytes) throws Exception {
+    private String encodeMedia(MultipartFile media) throws Exception {
 
-        return mediaService.encodeMedia(mediaBytes);
+        return mediaService.encodeMedia(media.getBytes());
     }
 
 }

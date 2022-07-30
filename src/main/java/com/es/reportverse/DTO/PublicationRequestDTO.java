@@ -3,6 +3,8 @@ package com.es.reportverse.DTO;
 import lombok.*;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,6 @@ public class PublicationRequestDTO {
 
     private Boolean isAuthorAnonymous;
 
-    private List<byte[]> mediasBytesList;
+    private List<MultipartFile> mediasBytesList;
 
 }
