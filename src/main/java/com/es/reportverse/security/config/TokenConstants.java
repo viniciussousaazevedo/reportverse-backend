@@ -13,7 +13,7 @@ public class TokenConstants {
 
     public static final String BEARER = "Bearer ";
 
-    public static String SECRET_WORD_FOR_TOKEN_GENERATION = System.getenv("SECRET_WORD_FOR_TOKEN_GENERATION");
+    public static final String SECRET_WORD_FOR_TOKEN_GENERATION = System.getenv("SECRET_WORD_FOR_TOKEN_GENERATION");
 
     public static final int MINUTES_FOR_TOKEN_EXPIRATION = 20000;
 
