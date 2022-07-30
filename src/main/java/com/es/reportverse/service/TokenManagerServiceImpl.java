@@ -8,6 +8,7 @@ import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -27,21 +28,15 @@ public class TokenManagerServiceImpl implements TokenManagerService {
 
     private final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
+    @Autowired
     AppUserService appUserService;
 
 
     @Override
     public AppUser decodeToken(String token, Algorithm algorithm) {
         JWTVerifier verifier = JWT.require(algorithm).build();
-        System.out.println("passou build");
-        System.out.println(verifier);
         DecodedJWT decodedJWT = verifier.verify(token);
-        System.out.println("passou verify");
-        System.out.println(decodedJWT);
         String username = decodedJWT.getSubject();
-        System.out.println("passou getSubject");
-        System.out.println(appUserService);
-
 
         return appUserService.getUser(username);
     }
@@ -73,19 +68,11 @@ public class TokenManagerServiceImpl implements TokenManagerService {
 
         if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
             try {
-                System.out.println("tentando pegar bytes");
-                System.out.println(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
-                System.out.println("algo : ");
-                System.out.println(algorithm);
                 String token = authorizationHeader.substring(BEARER.length());
-                System.out.println("token");
-                System.out.println(token);
                 return decodeToken(token, algorithm);
 
             } catch (Exception e) {
-                System.out.println("Caiu aqui");
-                System.out.println(e);
                 throw new ApiRequestException(e.getMessage());
             }
         } else {
