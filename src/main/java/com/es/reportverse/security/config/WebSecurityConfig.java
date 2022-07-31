@@ -45,12 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        List<String> noTokenEndpoints = new ArrayList<>(Arrays.asList(NO_TOKEN_ENDPOINTS));
-        noTokenEndpoints.forEach(
+        NO_TOKEN_ENDPOINTS.forEach(
                 endpoint -> endpoint += PERMIT_ALL_AFTER
         );
 
-        http.authorizeRequests().antMatchers(noTokenEndpoints.toArray(new String[0])).permitAll();
+        http.authorizeRequests().antMatchers(NO_TOKEN_ENDPOINTS.toArray(new String[0])).permitAll();
 
         http.authorizeRequests().antMatchers(GET, "/api/publicacao/analise" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
         http.authorizeRequests().antMatchers(DELETE, "/api/publicacao/**/analisar" + PERMIT_ALL_AFTER).hasAnyAuthority(UserRole.ADMINISTRADOR.name());
@@ -76,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(SWAGGER_ENDPOINTS);
+        web.ignoring().antMatchers(SWAGGER_ENDPOINTS.toArray(new String[0]));
     }
 
     @Bean
