@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @AllArgsConstructor
 public class TokenManagerServiceImpl implements TokenManagerService {
 
-    private final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
+    private static final String MISSING_TOKEN = "the token for this request is missing or it is incomplete";
 
     AppUserService appUserService;
 

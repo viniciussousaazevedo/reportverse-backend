@@ -27,9 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class PublicationServiceImpl implements PublicationService {
 
-    private final String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
-    private final String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
-    private final int QTT_REPORTS_TO_INVALIDADE_PUB = 5;
+    private static final String PUBLICATION_NOT_FOUND = "Publicação com id %s não encontrada";
+    private static final String USER_IS_NOT_AUTHOR = "Usuário com id %s não é o dono da publicação, por isso não pode editá-la";
+    private static final int QTT_REPORTS_TO_INVALIDATE_PUB = 5;
 
     private PublicationRepository publicationRepository;
 
@@ -115,7 +115,7 @@ public class PublicationServiceImpl implements PublicationService {
         }
 
         if (isReportRelated){
-            if(reactionList.size() >= QTT_REPORTS_TO_INVALIDADE_PUB && !publication.getNeedsReview()){
+            if(reactionList.size() >= QTT_REPORTS_TO_INVALIDATE_PUB && !publication.getNeedsReview()){
                 publication.setNeedsReview(true);
                 publication.setIsAvailable(false);
                 this.emailService.notifyAdminsReportedPublication(publication);

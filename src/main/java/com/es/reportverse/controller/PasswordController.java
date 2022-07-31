@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class PasswordController {
 
-    private final String SUCCESSFULLY_CHANGED_PASSWORD = "Senha alterada com sucesso.";
+    private static final String SUCCESSFULLY_CHANGED_PASSWORD = "Senha alterada com sucesso.";
 
     AppUserService appUserService;
 

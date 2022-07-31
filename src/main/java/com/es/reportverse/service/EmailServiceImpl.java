@@ -14,13 +14,13 @@ import java.util.Collection;
 @AllArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
+    private static final String PASSWORD_RECOVERY_EMAIL_SENT = "Email foi enviado com sucesso";
 
-    final String EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação foi excluída da plataforma.";
+    private static final String EXCLUDED_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação foi excluída da plataforma.";
 
-    final String AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação voltou ao ar na plataforma";
+    private static final String AVAILABLE_PUBLICATION_AUTHOR_NOTIFIED = "O autor da publicação foi notificado e a publicação voltou ao ar na plataforma";
 
-    final String PASSWORD_RECOVERY_DOMAIN = System.getenv("PASSWORD_RECOVERY_LINK");
+    private static final String PASSWORD_RECOVERY_DOMAIN = System.getenv("PASSWORD_RECOVERY_LINK");
 
     private final JavaMailSender emailSender;
 

@@ -22,9 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
 
-    private final static String USER_NOT_FOUND = "Usuário não encontrado";
-    private final static String USERNAME_ALREADY_TAKEN = "e-mail %s já se encontra cadastrado";
-    private final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
+    private static final String USER_NOT_FOUND = "Usuário não encontrado";
+    private static final String USERNAME_ALREADY_TAKEN = "e-mail %s já se encontra cadastrado";
+    private static final String UNMATCHED_PASSWORDS = "A senha informada não coincide com a confirmação de senha";
 
     private AppUserRepository appUserRepository;
 

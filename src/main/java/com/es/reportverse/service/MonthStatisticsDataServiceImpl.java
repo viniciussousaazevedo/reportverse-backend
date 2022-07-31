@@ -29,9 +29,9 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
 
     private MediaService mediaService;
 
-    private final int RELEASE_STATISTICS_DATE = 25;
+    private static final int RELEASE_STATISTICS_DATE = 25;
 
-    private final String CURRENT_MONTH_DATA_IS_NOT_READY = "Os dados do mês atual ainda não foram coletados " +
+    private static final String CURRENT_MONTH_DATA_IS_NOT_READY = "Os dados do mês atual ainda não foram coletados " +
             "a ponto de realizar uma comparação estatística. " +
             "Por favor, aguarde até pelo menos o 25º dia para novas análises.";
 
