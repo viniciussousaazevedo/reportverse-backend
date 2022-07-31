@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.es.reportverse.exception.ApiRequestException;
@@ -50,7 +51,7 @@ public class BadWordsFilter {
 
     }
      
-    public static ArrayList<String> badWordsFound(String input) {
+    public static List<String> badWordsFound(String input) {
         if(input == null) {
             return new ArrayList<>();
         }
@@ -80,8 +81,8 @@ public class BadWordsFilter {
                     // caso a parte que ele achou imprópria faça parte de uma palavra maior ele ignora
                     String[] ignoreCheck = words.get(wordToCheck);
                     boolean ignore = false;
-                    for(int s = 0; s < ignoreCheck.length; s++ ) {
-                        if(input.contains(ignoreCheck[s])) {
+                    for (String value : ignoreCheck) {
+                        if (input.contains(value)) {
                             ignore = true;
                             break;
                         }
@@ -103,7 +104,7 @@ public class BadWordsFilter {
 
     public static void filterText(String input) {
         BadWordsFilter.loadConfigs();
-        ArrayList<String> badWords = badWordsFound(input);
+        List<String> badWords = badWordsFound(input);
         if(badWords.size() > 0) {
             throw new ApiRequestException(String.format(BAD_WORD_FOUNDED));
         }

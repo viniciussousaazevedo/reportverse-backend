@@ -20,6 +20,7 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
 
     private MediaService mediaService;
 
+    @Override
     public void registerMedias(List<MultipartFile> mediasList, Long publicationId) {
         try {
 
@@ -36,10 +37,12 @@ public class PublicationMediaServiceImpl implements PublicationMediaService {
         }
     }
 
+    @Override
     public void saveMedia(PublicationMedia publicationMedia) {
         publicationMediaRepository.save(publicationMedia);
     }
 
+    @Override
     public List<PublicationMedia> getMediasByPublicationId(Long publicationId) {
         return publicationMediaRepository.findByPublicationId(publicationId);
     }

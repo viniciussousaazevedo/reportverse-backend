@@ -63,6 +63,7 @@ public class TokenManagerServiceImpl implements TokenManagerService {
                 .sign(algorithm);
     }
 
+    @Override
     public AppUser decodeAppUserToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
 
