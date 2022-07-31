@@ -88,11 +88,11 @@ public class TokenManagerServiceImpl implements TokenManagerService {
 
         if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
             try {
-                String refresh_token = authorizationHeader.substring(BEARER.length());
+                String refreshToken = authorizationHeader.substring(BEARER.length());
                 Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
-                AppUser user = decodeToken(refresh_token, algorithm);
+                AppUser user = decodeToken(refreshToken, algorithm);
 
-                String access_token = JWT.create()
+                String accessToken = JWT.create()
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + MINUTES_FOR_TOKEN_EXPIRATION * 60 * 1000))
                         .withIssuer(request.getRequestURI())
@@ -100,8 +100,8 @@ public class TokenManagerServiceImpl implements TokenManagerService {
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
+                tokens.put("access_token", accessToken);
+                tokens.put("refresh_token", refreshToken);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 

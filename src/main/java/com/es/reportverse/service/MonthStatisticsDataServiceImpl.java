@@ -70,8 +70,8 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
 
     @Override
     public MonthStatisticsData createMonthStatisticsData(int year, int month) throws Exception {
-        String PdfContent = getPDFContent(year, month);
-        String pdfCode = createPDF(PdfContent);
+        String pdfContent = getPDFContent(year, month);
+        String pdfCode = createPDF(pdfContent);
         return new MonthStatisticsData(pdfCode, year, month);
     }
 

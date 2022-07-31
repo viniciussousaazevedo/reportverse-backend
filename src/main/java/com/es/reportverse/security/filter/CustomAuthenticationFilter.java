@@ -37,12 +37,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
 
-        String access_token = tokenManagerService.createAppUserToken(request, authentication);
-        String refresh_token = tokenManagerService.createAppUserToken(request, authentication);
+        String accessToken = tokenManagerService.createAppUserToken(request, authentication);
+        String refreshToken = tokenManagerService.createAppUserToken(request, authentication);
 
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
-        tokens.put("refresh_token", refresh_token);
+        tokens.put("access_token", accessToken);
+        tokens.put("refresh_token", refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
