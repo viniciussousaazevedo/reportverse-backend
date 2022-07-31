@@ -81,8 +81,7 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
         Path path = Paths.get(fileName);
         try {
             Document document = new Document();
-
-            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            PdfWriter.getInstance(document, Files.newOutputStream(path));
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
             document.add(new Paragraph(content, font));
