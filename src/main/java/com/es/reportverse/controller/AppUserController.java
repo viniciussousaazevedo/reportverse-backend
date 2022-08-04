@@ -45,4 +45,10 @@ public class AppUserController {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.tokenDecoder.refreshToken(request, response);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest request){
+        AppUser user = this.tokenDecoder.decodeAppUserToken(request);
+        return new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.OK);
+    }
 }

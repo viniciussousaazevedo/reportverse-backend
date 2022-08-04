@@ -152,7 +152,6 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
     }
 
     private String getStringComparation(int num1, int num2) {
-        DecimalFormat df = new DecimalFormat("0.00");
         double qttTimesBigger;
 
         if (num1 == 0 && num2 == 0) {
@@ -164,6 +163,7 @@ public class MonthStatisticsDataServiceImpl implements MonthStatisticsDataServic
         }
 
         String text;
+        DecimalFormat df = new DecimalFormat("0.00");
 
         if (qttTimesBigger < 1) {
             text = "(Decaimento aproximado de " + df.format((1 - qttTimesBigger) * 100) + "% com relação ao mês anterior)";

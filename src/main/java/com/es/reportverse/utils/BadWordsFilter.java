@@ -105,7 +105,7 @@ public class BadWordsFilter {
     public static void filterText(String input) {
         BadWordsFilter.loadConfigs();
         List<String> badWords = badWordsFound(input);
-        if(badWords.size() > 0) {
+        if(!badWords.isEmpty()) {
             throw new ApiRequestException(String.format(BAD_WORD_FOUNDED));
         }
     }

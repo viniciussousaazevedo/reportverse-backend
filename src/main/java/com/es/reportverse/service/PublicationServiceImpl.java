@@ -142,7 +142,7 @@ public class PublicationServiceImpl implements PublicationService {
         List<AppUserComment> commentToRemoveList = publication.getComments()
                                         .stream().filter(c -> c.getId().equals(commentId))
                                         .collect(Collectors.toList());
-        if(commentToRemoveList.size() > 0){
+        if(!commentToRemoveList.isEmpty()){
             AppUserComment commentToRemove = commentToRemoveList.get(0);
             if(commentToRemove.getAppUser().equals(user)){
                 publication.getComments().remove(commentToRemove);
