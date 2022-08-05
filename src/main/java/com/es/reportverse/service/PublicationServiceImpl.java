@@ -48,6 +48,7 @@ public class PublicationServiceImpl implements PublicationService {
 
         Publication publication = new Publication(
                 publicationDTO.getDescription(),
+                publicationDTO.getLocationDescription(),
                 publicationDTO.getLongitude(),
                 publicationDTO.getLatitude(),
                 user.getId(),

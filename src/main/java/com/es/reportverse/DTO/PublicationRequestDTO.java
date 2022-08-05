@@ -14,6 +14,8 @@ public class PublicationRequestDTO {
 
     private String description;
 
+    private String locationDescription;
+
     private String longitude;
 
     private String latitude;
