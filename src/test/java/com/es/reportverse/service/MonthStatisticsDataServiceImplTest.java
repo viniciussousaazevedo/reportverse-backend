@@ -104,20 +104,11 @@ class MonthStatisticsDataServiceImplTest {
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
-
         when(publicationService.getAllByIsResolvedYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(publicationService.getAllByYearAndMonthOrderedByLikes(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
+        MonthStatisticsData monthStatisticsData =  monthStatisticsDataServiceImpl.createMonthStatisticsData(2022, 0);
     }
 
     /**
@@ -139,15 +130,7 @@ class MonthStatisticsDataServiceImplTest {
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData3() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
 
         Publication publication = new Publication();
         publication.setAuthorId(123L);
@@ -173,23 +156,14 @@ class MonthStatisticsDataServiceImplTest {
         when(publicationService.getAllByIsResolvedYearAndMonth(anyInt(), anyInt())).thenReturn(publicationList);
         when(publicationService.getAllByYearAndMonthOrderedByLikes(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
+        MonthStatisticsData monthStatisticsData = monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
     }
 
     /**
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData4() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
-
         Publication publication = new Publication();
         publication.setAuthorId(123L);
         publication.setComments(new ArrayList<>());
@@ -214,22 +188,14 @@ class MonthStatisticsDataServiceImplTest {
         when(publicationService.getAllByIsResolvedYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(publicationService.getAllByYearAndMonthOrderedByLikes(anyInt(), anyInt())).thenReturn(publicationList);
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
+        MonthStatisticsData monthStatisticsData = monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
     }
 
     /**
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData5() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
 
         Publication publication = new Publication();
         publication.setAuthorId(123L);
@@ -275,42 +241,25 @@ class MonthStatisticsDataServiceImplTest {
         when(publicationService.getAllByIsResolvedYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(publicationService.getAllByYearAndMonthOrderedByLikes(anyInt(), anyInt())).thenReturn(publicationList);
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
+        MonthStatisticsData monthStatisticsData = monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
     }
 
     /**
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData6() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
-
         when(publicationService.getAllByIsResolvedYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(publicationService.getAllByYearAndMonthOrderedByLikes(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, -1);
+        MonthStatisticsData monthStatisticsData = monthStatisticsDataServiceImpl.createMonthStatisticsData(1, -1);
     }
 
     /**
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData7() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
 
         Publication publication = new Publication();
         publication.setAuthorId(123L);
@@ -383,15 +332,7 @@ class MonthStatisticsDataServiceImplTest {
      * Method under test: {@link MonthStatisticsDataServiceImpl#createMonthStatisticsData(int, int)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testCreateMonthStatisticsData8() throws Exception {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access files outside the temporary directory (file 'file.pdf', permission 'delete').
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
 
         Publication publication = mock(Publication.class);
         when(publication.getIsAuthorAnonymous()).thenReturn(false);
@@ -454,7 +395,7 @@ class MonthStatisticsDataServiceImplTest {
         appUser.setUsername("janedoe");
         when(appUserService.getUser((Long) any())).thenReturn(appUser);
         when(appUserService.getUsersByYearAndMonth(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
+        MonthStatisticsData monthStatisticsData = monthStatisticsDataServiceImpl.createMonthStatisticsData(1, 1);
     }
 }
 

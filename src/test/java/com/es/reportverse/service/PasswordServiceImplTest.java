@@ -129,7 +129,6 @@ class PasswordServiceImplTest {
         //   methods that make it easier to construct fully initialized objects used in
         //   setNewPassword(PasswordRecoveryDTO, String).
         //   See https://diff.blue/R013 to resolve this issue.
-
         AppUser appUser = mock(AppUser.class);
         when(appUser.getRecoveryPasswordTokenExpiration()).thenReturn(null);
         doNothing().when(appUser).setCreationDate((Date) any());

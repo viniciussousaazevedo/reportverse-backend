@@ -1,5 +1,6 @@
 package com.es.reportverse.service;
 
+import static com.es.reportverse.security.config.TokenConstants.SECRET_WORD_FOR_TOKEN_GENERATION;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
@@ -8,16 +9,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.es.reportverse.enums.UserRole;
 import com.es.reportverse.exception.ApiRequestException;
 import com.es.reportverse.model.AppUser;
 import com.es.reportverse.repository.AppUserRepository;
+
+import java.io.IOException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.Disabled;
 
@@ -28,6 +33,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,48 +54,20 @@ class TokenManagerServiceImplTest {
      * Method under test: {@link TokenManagerServiceImpl#decodeToken(String, Algorithm)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testDecodeToken() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.IllegalArgumentException: The Algorithm cannot be null.
-        //       at com.auth0.jwt.JWTVerifier$BaseVerification.<init>(JWTVerifier.java:57)
-        //       at com.auth0.jwt.JWTVerifier.init(JWTVerifier.java:46)
-        //       at com.auth0.jwt.JWT.require(JWT.java:56)
-        //       at com.es.reportverse.service.TokenManagerServiceImpl.decodeToken(TokenManagerServiceImpl.java:37)
-        //   In order to prevent decodeToken(String, Algorithm)
-        //   from throwing IllegalArgumentException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   decodeToken(String, Algorithm).
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        tokenManagerServiceImpl.decodeToken("ABC123", null);
+        Algorithm algorithm = Algorithm.HMAC256(SECRET_WORD_FOR_TOKEN_GENERATION.getBytes());
+        String mockToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpc3MiOiIvYXBpL2xvZ2luIiwiZXhwIjoxNjYxMDA1OTk0LCJ1c2VyUm9sZSI6WyJVTklWRVJTSVRBUklPIl19.d9_DY-3PDyy2QoZP8uTZ0HmiqIUdCWvb6nO6973l5u4";
+        tokenManagerServiceImpl.decodeToken(mockToken, algorithm);
     }
 
     /**
-     * Method under test: {@link TokenManagerServiceImpl#decodeToken(String, Algorithm)}
+     * Method under test: {@link TokenManagerServiceImpl#tokenDecodeError(Exception, HttpServletResponse)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
-    void testDecodeToken2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   com.auth0.jwt.exceptions.JWTDecodeException: The token was expected to have 3 parts, but got 1.
-        //       at com.auth0.jwt.TokenUtils.splitToken(TokenUtils.java:21)
-        //       at com.auth0.jwt.JWTDecoder.<init>(JWTDecoder.java:36)
-        //       at com.auth0.jwt.JWTVerifier.verify(JWTVerifier.java:282)
-        //       at com.es.reportverse.service.TokenManagerServiceImpl.decodeToken(TokenManagerServiceImpl.java:38)
-        //   In order to prevent decodeToken(String, Algorithm)
-        //   from throwing JWTDecodeException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   decodeToken(String, Algorithm).
-        //   See https://diff.blue/R013 to resolve this issue.
-
-        tokenManagerServiceImpl.decodeToken("ABC123", mock(Algorithm.class));
+    void testTokenDecodeError() throws IOException {
+        Exception e = new JWTVerificationException("message");
+        HttpServletResponse response = new MockHttpServletResponse();
+        this.tokenManagerServiceImpl.tokenDecodeError(e, response);
     }
 
     /**
@@ -148,21 +126,13 @@ class TokenManagerServiceImplTest {
      * Method under test: {@link TokenManagerServiceImpl#decodeAppUserToken(HttpServletRequest)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testDecodeAppUserToken2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException
-        //       at com.es.reportverse.service.TokenManagerServiceImpl.decodeAppUserToken(TokenManagerServiceImpl.java:68)
-        //   In order to prevent decodeAppUserToken(HttpServletRequest)
-        //   from throwing NullPointerException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   decodeAppUserToken(HttpServletRequest).
-        //   See https://diff.blue/R013 to resolve this issue.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        String mockToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpc3MiOiIvYXBpL2xvZ2luIiwiZXhwIjoxNjYxMDA1OTk0LCJ1c2VyUm9sZSI6WyJVTklWRVJTSVRBUklPIl19.d9_DY-3PDyy2QoZP8uTZ0HmiqIUdCWvb6nO6973l5u4";
+        String auth = "Bearer " + mockToken;
+        request.addHeader("Authorization", auth);
 
-        tokenManagerServiceImpl.decodeAppUserToken(null);
+        tokenManagerServiceImpl.decodeAppUserToken(request);
     }
 
     /**
@@ -189,6 +159,31 @@ class TokenManagerServiceImplTest {
         assertThrows(ApiRequestException.class,
                 () -> tokenManagerServiceImpl.decodeAppUserToken(defaultMultipartHttpServletRequest));
         verify(defaultMultipartHttpServletRequest).getHeader((String) any());
+    }
+
+    /**
+     * Method under test: {@link TokenManagerServiceImpl#refreshToken(HttpServletRequest, HttpServletResponse)}
+     */
+    @Test
+    void testRefreshToken() throws IOException {
+        // TODO: Complete this test.
+        //   Reason: R020 Temporary files were created but not deleted.
+        //   The method under test created the following temporary files without deleting
+        //   them:
+        //     /home/pedro/IdeaProjects/reportverse-backend/test.txt
+        //   Please ensure that temporary files are deleted in the method under test.
+        //   See https://diff.blue/R020
+
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        String mockToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpc3MiOiIvYXBpL2xvZ2luIiwiZXhwIjoxNjYxMDA1OTk0LCJ1c2VyUm9sZSI6WyJVTklWRVJTSVRBUklPIl19.d9_DY-3PDyy2QoZP8uTZ0HmiqIUdCWvb6nO6973l5u4";
+        String auth = "Bearer " + mockToken;
+        request.addHeader("Authorization", auth);
+
+        HttpServletResponse response = new MockHttpServletResponse();
+
+        this.tokenManagerServiceImpl.refreshToken(request, response);
+
     }
 }
 
