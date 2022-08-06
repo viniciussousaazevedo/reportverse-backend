@@ -1,8 +1,0 @@
-com.es.reportverse.service.AppUserServiceImpl
-com.es.reportverse.service.EmailServiceImpl
-com.es.reportverse.service.MediaServiceImpl
-com.es.reportverse.service.MonthStatisticsDataServiceImpl
-com.es.reportverse.service.PasswordServiceImpl
-com.es.reportverse.service.PublicationMediaServiceImpl
-com.es.reportverse.service.PublicationServiceImpl
-com.es.reportverse.service.TokenManagerServiceImpl
