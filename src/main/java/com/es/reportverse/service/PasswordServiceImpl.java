@@ -16,7 +16,7 @@ public class PasswordServiceImpl implements PasswordService{
 
     private static final int MINUTES_FOR_PASS_REC_TOKEN_EXPIRATION = 15;
     private static final String RECOVERY_TOKEN_EXPIRED = "Este link já expirou. Solicite uma nova recuperação de senha";
-    private static final String PASSWORD_RECOVERY_PATH = "/api/senha/trocar-senha/%s";
+    private static final String PASSWORD_RECOVERY_PATH = System.getenv("PASSWORD_RECOVERY_PATH") + "%s";
 
     private AppUserService appUserService;
 
