@@ -43,8 +43,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 @ContextConfiguration(classes = {PublicationServiceImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -68,58 +70,23 @@ class PublicationServiceImplTest {
      * Method under test: {@link PublicationServiceImpl#registerPublication(PublicationRequestDTO, HttpServletRequest)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testRegisterPublication() {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access the network.
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
 
-        PublicationRequestDTO publicationDTO = new PublicationRequestDTO();
-        publicationServiceImpl.registerPublication(publicationDTO, new MockHttpServletRequest());
-    }
+        PublicationRequestDTO publicationDTO = new PublicationRequestDTO(
+                "uma publicacao",
+                "uma localizacao",
+                "69",
+                "666",
+                false,
+                new ArrayList<MultipartFile>()
+        );
 
-    /**
-     * Method under test: {@link PublicationServiceImpl#registerPublication(PublicationRequestDTO, HttpServletRequest)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testRegisterPublication2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException
-        //       at com.es.reportverse.service.PublicationServiceImpl.registerPublication(PublicationServiceImpl.java:45)
-        //   In order to prevent registerPublication(PublicationRequestDTO, HttpServletRequest)
-        //   from throwing NullPointerException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   registerPublication(PublicationRequestDTO, HttpServletRequest).
-        //   See https://diff.blue/R013 to resolve this issue.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        String mockToken ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZWRyb0BnbWFpbC5jb20iLCJpc3MiOiIvYXBpL2xvZ2luIiwiZXhwIjoxNjYxMDE2NTg2LCJ1c2VyUm9sZSI6WyJVTklWRVJTSVRBUklPIl19.W9iw-NrUYA7i-q7sT0HutusDiQnGjxDaqaXYxDNBjMA";
+        String auth = "Bearer " + mockToken;
+        request.addHeader("Authorization", auth);
 
-        publicationServiceImpl.registerPublication(null, new MockHttpServletRequest());
-    }
-
-    /**
-     * Method under test: {@link PublicationServiceImpl#registerPublication(PublicationRequestDTO, HttpServletRequest)}
-     */
-    @Test
-    @Disabled("TODO: Complete this test")
-    void testRegisterPublication3() {
-        // TODO: Complete this test.
-        //   Reason: R011 Sandboxing policy violation.
-        //   Diffblue Cover ran code in your project that tried
-        //     to access the network.
-        //   Diffblue Cover's default sandboxing policy disallows this in order to prevent
-        //   your code from damaging your system environment.
-        //   See https://diff.blue/R011 to resolve this issue.
-
-        PublicationRequestDTO publicationRequestDTO = mock(PublicationRequestDTO.class);
-        when(publicationRequestDTO.getDescription()).thenReturn("The characteristics of someone or something");
-        publicationServiceImpl.registerPublication(publicationRequestDTO, new MockHttpServletRequest());
+        publicationServiceImpl.registerPublication(publicationDTO, request);
     }
 
     /**

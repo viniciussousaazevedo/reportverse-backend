@@ -93,7 +93,7 @@ class PasswordServiceImplTest {
     @Test
     void testSetNewPassword() {
         AppUser appUser = new AppUser();
-        LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
+        LocalDateTime atStartOfDayResult = LocalDate.of(2022, 8, 4).atStartOfDay();
         appUser.setCreationDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         appUser.setEnabled(true);
         appUser.setId(123L);
@@ -101,46 +101,20 @@ class PasswordServiceImplTest {
         appUser.setName("Name");
         appUser.setPassword("iloveyou");
         appUser.setRecoveryPasswordToken("ABC123");
-        LocalDateTime atStartOfDayResult1 = LocalDate.of(1970, 1, 1).atStartOfDay();
+        LocalDateTime atStartOfDayResult1 = LocalDate.of(2022, 8, 8).atStartOfDay();
         appUser.setRecoveryPasswordTokenExpiration(Date.from(atStartOfDayResult1.atZone(ZoneId.of("UTC")).toInstant()));
         appUser.setUserRole(UserRole.ADMINISTRADOR);
         appUser.setUsername("janedoe");
         when(appUserService.getUserByRecoveryPasswordToken((String) any())).thenReturn(appUser);
         passwordServiceImpl.setNewPassword(new PasswordRecoveryDTO("iloveyou", "Password Confirmation"), "ABC123");
-        verify(appUserService).getUserByRecoveryPasswordToken((String) any());
     }
 
     /**
      * Method under test: {@link PasswordServiceImpl#setNewPassword(PasswordRecoveryDTO, String)}
      */
     @Test
-    @Disabled("TODO: Complete this test")
     void testSetNewPassword2() {
-        // TODO: Complete this test.
-        //   Reason: R013 No inputs found that don't throw a trivial exception.
-        //   Diffblue Cover tried to run the arrange/act section, but the method under
-        //   test threw
-        //   java.lang.NullPointerException
-        //       at java.util.Date.getMillisOf(Date.java:956)
-        //       at java.util.Date.after(Date.java:929)
-        //       at com.es.reportverse.service.PasswordServiceImpl.setNewPassword(PasswordServiceImpl.java:40)
-        //   In order to prevent setNewPassword(PasswordRecoveryDTO, String)
-        //   from throwing NullPointerException, add constructors or factory
-        //   methods that make it easier to construct fully initialized objects used in
-        //   setNewPassword(PasswordRecoveryDTO, String).
-        //   See https://diff.blue/R013 to resolve this issue.
-        AppUser appUser = mock(AppUser.class);
-        when(appUser.getRecoveryPasswordTokenExpiration()).thenReturn(null);
-        doNothing().when(appUser).setCreationDate((Date) any());
-        doNothing().when(appUser).setEnabled((Boolean) any());
-        doNothing().when(appUser).setLocked((Boolean) any());
-        doNothing().when(appUser).setName((String) any());
-        doNothing().when(appUser).setPassword((String) any());
-        doNothing().when(appUser).setRecoveryPasswordToken((String) any());
-        doNothing().when(appUser).setRecoveryPasswordTokenExpiration((Date) any());
-        doNothing().when(appUser).setUserRole((UserRole) any());
-        doNothing().when(appUser).setUsername((String) any());
-        doNothing().when(appUser).setId((Long) any());
+        AppUser appUser = new AppUser();
         LocalDateTime atStartOfDayResult = LocalDate.of(1970, 1, 1).atStartOfDay();
         appUser.setCreationDate(Date.from(atStartOfDayResult.atZone(ZoneId.of("UTC")).toInstant()));
         appUser.setEnabled(true);
@@ -154,7 +128,9 @@ class PasswordServiceImplTest {
         appUser.setUserRole(UserRole.ADMINISTRADOR);
         appUser.setUsername("janedoe");
         when(appUserService.getUserByRecoveryPasswordToken((String) any())).thenReturn(appUser);
-        passwordServiceImpl.setNewPassword(new PasswordRecoveryDTO("iloveyou", "Password Confirmation"), "ABC123");
+
+        assertThrows(ApiRequestException.class, () -> passwordServiceImpl.setNewPassword(new PasswordRecoveryDTO("iloveyou", "Password Confirmation"), "ABC123"));
+
     }
 }
 
