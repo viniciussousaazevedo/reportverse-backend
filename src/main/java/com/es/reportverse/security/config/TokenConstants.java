@@ -12,7 +12,7 @@ public class TokenConstants {
             "/api/usuario/cadastro",
             "/api/usuario/token/refresh",
             "/api/senha/esqueci-senha",
-            "/api/senha/trocar-senha")));
+            "/api/senha/trocar-senha/**")));
 
     public static final String BEARER = "Bearer ";
 
