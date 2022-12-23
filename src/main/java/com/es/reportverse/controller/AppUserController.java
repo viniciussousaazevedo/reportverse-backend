@@ -50,5 +50,6 @@ public class AppUserController {
     public ResponseEntity<?> getAuthenticatedUser(HttpServletRequest request){
         AppUser user = this.tokenDecoder.decodeAppUserToken(request);
         return new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.OK);
+        // ALTERAÇÃO AQUI!
     }
 }
